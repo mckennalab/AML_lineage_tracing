@@ -51,8 +51,6 @@ d87_c2_sites <- d87_c2_sites %>%  mutate(edit_count = rowSums(.[1:8] != "NONE"))
 
 prop_df$count <- c(cntrl_sites$edit_count, d13_sites$edit_count, d44_sites$edit_count, d64_c1_sites$edit_count, d87_c2_sites$edit_count)
 
-
-#what if its a line plot with error bars
 prop_df$count <- as_numeric(prop_df$count)
 summary_df <- prop_df %>% dplyr::group_by(sample) %>%
   dplyr::summarise(mean = mean(count), 
@@ -76,7 +74,7 @@ ggplot(summary_df, aes(x=sample, y=mean, fill = "test")) +
 
 ##### plot edit type (figure 1d) #####
 clone_ids <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/other/neoclone_IDs.csv", header = TRUE, row.names = 1)
-clone_ids <- clone_ids[clone_ids$clone %in% c(1,6), ] #keep founder 1 + 6
+clone_ids <- clone_ids[clone_ids$clone %in% c(1,6), ] 
 d87_p_c2 <- d87_p_c2[d87_p_c2$ftag %in% clone_ids$ID, ]
 
 edit_types <- as.data.frame(d87_p_c2$readName)
