@@ -84,7 +84,7 @@ f6m4 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 4]))
 f6m5 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 5]))
 
 
-##### calculate jaccard indices #####
+##### geneoverlap #####
 c1498_list <- list(f1m1, f1m2, f1m3, f1m4, f6m1, f6m2, f6m3, f6m4, f6m5)
 names(c1498_list) <- c('f1m1', 'f1m2', 'f1m3', 'f1m4', 'f6m1', 'f6m2', 'f6m3', 'f6m4', 'f6m5')
 hl60_list <- list(mega_mod1, mega_mod2, mega_mod3, mega_mod4, mega_mod5, mega_mod6, mega_mod7, mega_mod8, mega_mod9, mega_mod10, mega_mod11, mega_mod12, mega_mod13, mega_mod14, mega_mod15, mega_mod16, mega_mod17, mega_mod18)
