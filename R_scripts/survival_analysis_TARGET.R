@@ -129,7 +129,6 @@ clin_data_full <- clin_data %>% right_join(clin_sample_data, by = ("PATIENT_ID")
 
 
 # adding extra clin info from GDC
-#general clinical info
 clin_val_info <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/other/c1498_hl60_module_analysis/TARGET_AML_clinvalidation_clindata.csv")
 clin_val_info_min <- clin_val_info[, c(1,2,5,6,7,8,9,14,15,18,49,50,51,52,53,54,55,57,58,59,64)]
 discovery_info <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/other/c1498_hl60_module_analysis/TARGET_AML_discovery_clindata.csv")
@@ -215,7 +214,7 @@ score_df$Sample_ID <- score_df$patient
 score_df$Sample_ID <- gsub('\\.', '-', score_df$Sample_ID)
 score_df <- score_df %>% inner_join(clin_data_full, by = c("Sample_ID" = "SAMPLE_ID"))
 
-#remove the few patients with sorted and unsorted samples
+#remove the few samples with sorted info
 score_df_nosort <- score_df[!grepl("Sort", score_df$PATIENT_ID),]
 score_df_nosort <- score_df_nosort[!grepl("sort", score_df_nosort$PATIENT_ID),]
 
@@ -233,8 +232,7 @@ all_dx <- score_df[score_df$SAMPLE_TYPE %in% c("Primary Blood Derived Cancer - P
 model <- coxph(Surv(months_to_follow_up, status) ~ AGE + SEX + prot_11s + pre_resist, data = dx_bm)
 ggforest(model, data = dx_bm) + theme_cowplot()
 
-#adding risk group 
-#with risk group
+#with risk group 
 dx_bm_w_riskcat <- dx_bm[!is.na(dx_bm$Risk.group), ]
 dx_bm_w_riskcat <- dx_bm_w_riskcat[dx_bm_w_riskcat$Risk.group %nin% c("", "10", "30"), ]
 dx_bm_w_riskcat$Risk.group <- factor(dx_bm_w_riskcat$Risk.group, levels = c("Standard Risk", "Low Risk", "High Risk"))
