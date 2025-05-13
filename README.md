@@ -11,7 +11,7 @@
   - [Single cell RNA sequencing](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE289454) (GEO series GSE289454)
   - [DNA sequencing](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE289459) (GEO series GSE289459)
 
-- Included are scripts used to analyze data and generate figures
+- Included are data and scripts used to analyze data and generate figures
   - R scripts
     - [lineage_seq_processing.R](R_scripts/lineage_seq_processing.R): extracting FLARE lineage data from [SingleCellLineage](https://github.com/mckennalab/SingleCellLineage) output
     - [lineage_recorder_editing_plots.R](R_scripts/lineage_recorder_editing_plots.R): plotting FLARE barcode editing
@@ -20,3 +20,5 @@
     - [mouse_blooddraw_lineage.R](R_scripts/mouse_blooddraw_lineage.R): analysis of FLARE bulk sequencing data from longitudinal blood samples
     - [module_overlap_analysis.R](R_scripts/module_overlap_analysis.R): computing Hotspot gene module overlaps
     - [survival_analysis_TARGET.R](R_scripts/survival_analysis_TARGET.R): survival analysis using the TARGET AML patient cohort
+  - Trees
+    - Newick files for FLARE lineage trees
