@@ -13,8 +13,8 @@
 
 - Included are scripts used to analyze data and generate figures
   - R scripts
-    - [lineage_recorder_editing_plots.R](R_scripts/lineage_recorder_editing_plots.R): plotting FLARE barcode editing
     - [lineage_seq_processing.R](R_scripts/lineage_seq_processing.R): extracting FLARE lineage data from [SingleCellLineage](https://github.com/mckennalab/SingleCellLineage) output
+    - [lineage_recorder_editing_plots.R](R_scripts/lineage_recorder_editing_plots.R): plotting FLARE barcode editing
     - [single_cell_GEX_initial_processing.R](R_scripts/single_cell_GEX_initial_processing.R): initial scRNA-seq analysis post CellRanger
     - [single_cell_lineage_analysis.R](R_scripts/single_cell_lineage_analysis.R): integration and downstream analysis of single cell lineage and transciptomics
     - [mouse_blooddraw_lineage.R](R_scripts/mouse_blooddraw_lineage.R): analysis of FLARE bulk sequencing data from longitudinal blood samples
