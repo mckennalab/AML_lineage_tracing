@@ -18,6 +18,9 @@ library(bayesbio)
 library(grid)
 
 ##### processing output from SingleCellLineage pipeline #####
+recorder_stats_file <- fread("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/illumina/240123_RS21_RS22_initial/data/pipeline_output_fixed_castag_ref/rs21_rs22_lin/rs21_rs22_lin.stats")
+
+# load cell ID whitelist associated with 10X chemistry
 rosetta <- read.table("/dartfs/rc/lab/M/McKennaLab/resources/cellranger_versions/cellranger-7.2.0/lib/python/cellranger/barcodes/translation/3M-february-2018.txt.gz") #pre GEM-X 10x whitelist
 rosetta <- read.table("/oldhome/rachel/updated_cellranger/cellranger-8.0.1/lib/python/cellranger/barcodes/translation/3M-3pgex-may-2023.txt.gz") #GEM-X 10x whitelist
 
@@ -81,6 +84,7 @@ bulk_ftag_clonetag_reads <- get_UMI_non10x(bulk_stats_file)
 recorder_ftag_reads_10x <- get_UMI_cellID_ftag_10xdata(recorder_stats_file)
 clonetag_reads_10x <- get_UMI_cellID_castag_10xdata(clonetag_stats_file)
 
+# join with whitelist to get pA capture/GEX cell IDs
 recorder_ftag_reads_10x <- recorder_ftag_reads_10x %>% inner_join(rosetta, 
                                     by=c('cell_ID'='V2'))
 clonetag_reads_10x <- clonetag_reads_10x %>% inner_join(rosetta, 
