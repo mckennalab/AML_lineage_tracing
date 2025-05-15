@@ -7,14 +7,9 @@ library(ShortRead)
 library(data.table)
 library(Seurat)
 library(dplyr)
-library(sctransform)
-library(glmGamPoi)
 library(stringr)
 library(BiocManager)
-library(viridis)
-library(EnhancedVolcano)
 library(radiant.data)
-library(RColorBrewer)
 library(ggnewscale)
 library(grid)
 library(scCustomize)
@@ -43,6 +38,7 @@ sep_demux_combo_joined <- AddMetaData(
   col.name = "cas_clone"
 )
 
+# remove cells without a founder assignment
 strict_founder_cells <- subset(sep_demux_combo_joined, founder != "NA")
 
 
@@ -78,6 +74,7 @@ ggplot(prop_df, aes(fill = factor(founder, levels=c(11,6,1)), y = n, x = factor(
 
 ##### dot plot of clone proportions by exp group (figure 2d) #####
 library(ggprism)
+# isolate cells with clone assignemnts
 strict_founder_cells_cas <- strict_founder_cells[, strict_founder_cells$cas_clone != "F1.unassigned"]
 strict_founder_cells_cas <- strict_founder_cells_cas[, strict_founder_cells_cas$cas_clone != "F6.unassigned"]
 strict_founder_cells_cas <- strict_founder_cells_cas[, strict_founder_cells_cas$cas_clone != "F11.unassigned"]
@@ -204,16 +201,16 @@ auto_df6 <- df6 %>%
   filter(adj_p.val < 0.05)
 auto_df6 <- auto_df6[, -1]
 
-#get the top z scores
+# get the top z scores
 auto_df6 <- auto_df6[-grep("Rpl", auto_df6$Var2), ]
 auto_df6 <- auto_df6[-grep("Rps", auto_df6$Var2), ]
 auto_df6 <- auto_df6[-grep("mt-", auto_df6$Var2), ]
 auto_df6 <- auto_df6 %>% arrange(desc(Z))
 f6_genes <- auto_df6$Var2[1:15]
 
-#make joined gene list, get rid of duplicates
+# make joined gene list, get rid of duplicates
 gene_list <- c(f1_genes, f6_genes)
-#set order if applicable
+# set order if applicable
 gene_list_order <- c("Control", "Persistent", "Resistant", "Mouse", "Adprh", "Mctp1", "Itsn1", "Cd7", "Slc9a9", "Vim", "Lpcat2", "Gng5", "Grap2", "Olfm3", "Sugct", "Rapsn", "Hba-a1", "Fcer1g", "Npm1", "Kcnk13", "Cpa3", "Ybx1", "Eef1a1", "Eif4a1", "Gm10076", "Hsp90aa1", "Scd2", "Malat1")
 
 f1_gene_df <- df1[df1$Var1 %in% gene_list_order, ]
@@ -355,27 +352,19 @@ ggplot(fgseaResTidy_f6 %>% filter(padj < 0.001) %>% head(n= 30), aes(reorder(pat
 
 
 ##### fish/alluvial plots for HL60s founder proportion over time (figure 3c) #####
-start <- strict_founder_hl60s[, strict_founder_hl60s$sample == "Pre_exp_pool"]
-a_mid <- strict_founder_hl60s[, strict_founder_hl60s$sample == "A_midpoint"]
-b_mid <- strict_founder_hl60s[, strict_founder_hl60s$sample == "B_midpoint"]
-c_mid <- strict_founder_hl60s[, strict_founder_hl60s$sample == "Control_midpoint"]
-a_ep <- strict_founder_hl60s[, strict_founder_hl60s$sample == "A"]
-b_ep <- strict_founder_hl60s[, strict_founder_hl60s$sample == "B"]
-c_ep <- strict_founder_hl60s[, strict_founder_hl60s$sample == "Control"]
-
-start_table <- as.data.frame(table(start$founder))
+start_table <- as.data.frame(table(strict_founder_hl60s$founder[strict_founder_hl60s$sample == "Pre_exp_pool"]))
 names(start_table) <- c("Founder", 0)
-amid_table <- as.data.frame(table(a_mid$founder))
+amid_table <- as.data.frame(table(strict_founder_hl60s$founder[strict_founder_hl60s$sample == "A_midpoint"]))
 names(amid_table) <- c("Founder", 36)
-bmid_sub_table <- as.data.frame(table(b_mid$founder))
+bmid_sub_table <- as.data.frame(table(strict_founder_hl60s$founder[strict_founder_hl60s$sample == "B_midpoint"]))
 names(bmid_sub_table) <- c("Founder", 36)
-cmid_sub_table <- as.data.frame(table(c_mid$founder))
+cmid_sub_table <- as.data.frame(table(strict_founder_hl60s$founder[strict_founder_hl60s$sample == "Control_midpoint"]))
 names(cmid_sub_table) <- c("Founder", 43)
-aep_sub_table <- as.data.frame(table(a_ep$founder))
+aep_sub_table <- as.data.frame(table(strict_founder_hl60s$founder[strict_founder_hl60s$sample == "A"]))
 names(aep_sub_table) <- c("Founder", 89)
-bep_sub_table <- as.data.frame(table(b_ep$founder))
+bep_sub_table <- as.data.frame(table(strict_founder_hl60s$founder[strict_founder_hl60s$sample == "B"]))
 names(bep_sub_table) <- c("Founder", 89)
-cep_sub_table <- as.data.frame(table(c_ep$founder))
+cep_sub_table <- as.data.frame(table(strict_founder_hl60s$founder[strict_founder_hl60s$sample == "Control"]))
 names(cep_sub_table) <- c("Founder", 89)
 
 a_counts <- start_table %>% full_join(amid_table, by = "Founder")
