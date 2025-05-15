@@ -2,18 +2,14 @@
 
 ##### packages #####
 library(ggplot2)
-library(pals)
 library(cowplot)
-library(ggpubr)
 library(devtools)
 library(ShortRead) 
 library(data.table)
 library(dplyr)
 library(stringr)
 library(BiocManager)
-library(viridis)
 library(radiant.data)
-library(RColorBrewer)
 library(bayesbio)
 library(grid)
 `%nin%` = Negate(`%in%`)
@@ -33,22 +29,23 @@ d87_p_c2 <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/illumin
 
 ##### editing over time (figure 1c) #####
 
-# target sites
+# extracting columns with target site info
 cntrl_sites <- ctrl[, c(4:11)]
 d13_sites <- d13_p[, c(4:11)]
 d44_sites <- d44_p[, c(4:11)]
 d64_c1_sites <- d64_p_c1[, c(4:11)]
 d87_c2_sites <- d87_p_c2[, c(4:11)]
 
-sample <- c(replicate(133088, 0), replicate(85711, 13), replicate(1170303, 44), replicate(210253, 64), replicate(1738606, 87))
-prop_df <- as.data.frame(sample)
-
+# count the number of edited target sites for each read
 cntrl_sites <- cntrl_sites %>%  mutate(edit_count = rowSums(.[1:8] != "NONE"))
 d13_sites <- d13_sites %>%  mutate(edit_count = rowSums(.[1:8] != "NONE"))
 d44_sites <- d44_sites %>%  mutate(edit_count = rowSums(.[1:8] != "NONE"))
 d64_c1_sites <- d64_c1_sites %>%  mutate(edit_count = rowSums(.[1:8] != "NONE"))
 d87_c2_sites <- d87_c2_sites %>%  mutate(edit_count = rowSums(.[1:8] != "NONE"))
 
+# get it all into 1 df for plotting (certainly not the best method)
+sample <- c(replicate(133088, 0), replicate(85711, 13), replicate(1170303, 44), replicate(210253, 64), replicate(1738606, 87))
+prop_df <- as.data.frame(sample)
 prop_df$count <- c(cntrl_sites$edit_count, d13_sites$edit_count, d44_sites$edit_count, d64_c1_sites$edit_count, d87_c2_sites$edit_count)
 
 prop_df$count <- as_numeric(prop_df$count)
@@ -73,10 +70,11 @@ ggplot(summary_df, aes(x=sample, y=mean, fill = "test")) +
 
 
 ##### plot edit type (figure 1d) #####
-clone_ids <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/other/neoclone_IDs.csv", header = TRUE, row.names = 1)
-clone_ids <- clone_ids[clone_ids$clone %in% c(1,6), ] 
-d87_p_c2 <- d87_p_c2[d87_p_c2$ftag %in% clone_ids$ID, ]
+clone_ids <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/other/neoclone_IDs.csv", header = TRUE, row.names = 1) #pre-identified founder tags
+clone_ids <- clone_ids[clone_ids$clone %in% c(1,6), ] #just interested in F1 and F6
+d87_p_c2 <- d87_p_c2[d87_p_c2$ftag %in% clone_ids$ID, ] 
 
+# determine if edits are unique to one target or span multiple targets
 edit_types <- as.data.frame(d87_p_c2$readName)
 edit_types <- edit_types %>% 
   mutate(t1 = ifelse(d87_p_c2$target1 == "NONE", "unedited", ifelse(d87_p_c2$target1 == d87_p_c2$target2, "multi", "single"))) %>% 
@@ -105,10 +103,10 @@ ggplot(plot_df, aes(fill = factor(Var1, levels=c("unedited", "single", "multi"))
 ##### editing by integration site in founder 1 (figure 1e) #####
 d87_p_c2$summary <- paste(d87_p_c2$target1, d87_p_c2$target2, d87_p_c2$target3, d87_p_c2$target4, d87_p_c2$target5, d87_p_c2$target6, d87_p_c2$target7, d87_p_c2$target8, sep = " ")
 
-clone_ids <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/other/neoclone_IDs.csv", header = TRUE, row.names = 1)
-clone_ids <- clone_ids[clone_ids$clone == 1, ]
+clone_ids <- clone_ids[clone_ids$clone == 1, ] #just interested in F1 for this plot
 d87_p_c2 <- d87_p_c2[d87_p_c2$ftag %in% clone_ids$ID, ]
 
+# identify fully unedited target arrays
 d87_p_c2$status <- "edited"
 d87_p_c2$status[d87_p_c2$summary == "NONE NONE NONE NONE NONE NONE NONE NONE"] <- "unedited"
 
