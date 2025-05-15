@@ -1,19 +1,13 @@
 # for taking the .stats output from SingleCellLineage pipeline, extracting UMIs (ftag, clonetag, etc), subsetting for valid 10x cell IDs
 
 ##### packages #####
-library(ggplot2)
-library(pals)
-library(cowplot)
-library(ggpubr)
 library(devtools)
 library(ShortRead) 
 library(data.table)
 library(dplyr)
 library(stringr)
 library(BiocManager)
-library(viridis)
 library(radiant.data)
-library(RColorBrewer)
 library(bayesbio)
 library(grid)
 
