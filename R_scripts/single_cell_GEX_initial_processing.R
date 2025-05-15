@@ -1,31 +1,20 @@
 ##### packages #####
-library(ggplot2)
-library(devtools)
-library(ShortRead) 
-library(data.table)
 library(Seurat)
 library(dplyr)
 library(sctransform)
 library(glmGamPoi)
 library(stringr)
 library(BiocManager)
-library(viridis)
-library(EnhancedVolcano)
 library(radiant.data)
-library(RColorBrewer)
-library(ggnewscale)
 library(grid)
 library(scCustomize)
-library(cowplot)
-library(pals)
 library(forcats)
-library(ggsignif)
 `%nin%` = Negate(`%in%`)
 
 
 ##### creating seurat object, demultiplexing MULTIseq, initial analysis #####
 
-# creating object
+# creating object from cellranger multi output (MULTIseq multiplexing)
 lane_a_data <- Read10X(data.dir = "/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/illumina/RS22_invitro_EP/GEX/cellranger_multi_062624/laneA/outs/per_sample_outs/laneA/count/sample_filtered_feature_bc_matrix")
 lane_a <- CreateSeuratObject(counts = lane_a_data$`Gene Expression`)
 lane_a[['Sample']] <- CreateAssayObject(counts = lane_a_data$`Antibody Capture`) 
@@ -58,7 +47,6 @@ lane_a <- FindClusters(lane_a, verbose = FALSE, resolution = 0.2)
 
 
 ##### integrating seurat objects (when applicable) #####
-
 data_list <- c(lane_a, lane_b)
 features <- SelectIntegrationFeatures(object.list = data_list, nfeatures = 3000)
 data_list <- PrepSCTIntegration(object.list = data_list, anchor.features = features)
@@ -128,7 +116,7 @@ strict_founder_cells <- CellCycleScoring(
   s.features = s.genes
 )
 
-# human cells 
+# human cells (cc.genes already loaded)
 hl60s_no_mid <- CellCycleScoring(
   object = hl60s_no_mid,
   g2m.features = cc.genes$g2m.genes,
