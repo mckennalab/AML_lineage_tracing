@@ -1,8 +1,10 @@
 # Hotspot module overlap analysis
 library(GeneOverlap)
 
-# load modules, get human orthologs for C1498 modules
+# load HL60 modules
 hl60_mods <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/illumina/RS30_RS31_humancellEP/GEX/hotspot/hl60_megamega_modlist.csv")
+
+# splitting modules, cleaning up the data (depends on module csv format)
 mega_mod1 <- c(hl60_mods$Module.1)
 mega_mod1 <- mega_mod1[mega_mod1 != ""]
 
@@ -57,10 +59,12 @@ mega_mod17 <- mega_mod17[mega_mod17 != ""]
 mega_mod18 <- c(hl60_mods$Module.18)
 mega_mod18 <- mega_mod18[mega_mod18 != ""]
 
-
+# load C1498 modules
 c1498_mods <- read.csv("/dartfs/rc/lab/M/McKennaLab/projects/hannah/aml/analysis/c1498_lineage_NEW/rs22_rs28/trees_res1/HotSpot/241113_rs22_rs28_combo_joined_rm_MT-RB/24114_rs22_rs28_combo_joined_rm_MT_RB_hotspot_modules_annotated.csv")
 f1_mega_mods <- c1498_mods[c1498_mods$clone == "F1_Vanilla_rmWT_megatree", ]
 f6_mega_mods <- c1498_mods[c1498_mods$clone == "F6_Vanilla_rmWT_megatree", ]
+
+# convert mouse genes to human orthologs
 orthologs <- read.csv("http://www.informatics.jax.org/downloads/reports/HOM_MouseHumanSequence.rpt",sep="\t")
 mouse <- split.data.frame(orthologs,orthologs$Common.Organism.Name)[[2]]
 human <- split.data.frame(orthologs,orthologs$Common.Organism.Name)[[1]]
@@ -84,7 +88,7 @@ f6m4 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 4]))
 f6m5 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 5]))
 
 
-##### geneoverlap #####
+##### geneoverlap package #####
 c1498_list <- list(f1m1, f1m2, f1m3, f1m4, f6m1, f6m2, f6m3, f6m4, f6m5)
 names(c1498_list) <- c('f1m1', 'f1m2', 'f1m3', 'f1m4', 'f6m1', 'f6m2', 'f6m3', 'f6m4', 'f6m5')
 hl60_list <- list(mega_mod1, mega_mod2, mega_mod3, mega_mod4, mega_mod5, mega_mod6, mega_mod7, mega_mod8, mega_mod9, mega_mod10, mega_mod11, mega_mod12, mega_mod13, mega_mod14, mega_mod15, mega_mod16, mega_mod17, mega_mod18)
@@ -124,6 +128,8 @@ names(mouse_emt_corr) <- c("f1m1", "mega_mod2", "reactome_tgfb_emt", "gotzmann_e
 sfc_m1_test_cormat_kendall <- cor(mouse_emt_corr, method = "kendall")
 sfc_m1_test_cormat_pearson <- cor(mouse_emt_corr, method = "pearson")
 sfc_m1_test_cormat_spearman <- cor(mouse_emt_corr, method = "spearman")
+
+# plot correlation matrix
 corrplot(
   sfc_m1_test_cormat_kendall)
 
@@ -152,5 +158,7 @@ names(human_emt_corr) <- c("f1m1", "mega_mod2", "reactome_tgfb_emt", "gotzmann_e
 cormat_kendall <- cor(human_emt_corr, method = "kendall")
 cormat_pearson <- cor(human_emt_corr, method = "pearson")
 cormat_spearman <- cor(human_emt_corr, method = "spearman")
+
+# plot correlation matrix
 corrplot(
   cormat_kendall)
