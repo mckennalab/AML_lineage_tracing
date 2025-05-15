@@ -10,11 +10,9 @@ library(data.table)
 library(dplyr)
 library(stringr)
 library(BiocManager)
-library(RColorBrewer)
 library(bayesbio)
 library(grid)
 library(cowplot)
-library(pals)
 library(org.Hs.eg.db)
 library(biomaRt)
 
@@ -22,6 +20,8 @@ library(biomaRt)
 
 ##### load modules, get human orthologs for C1498 modules #####
 hl60_mods <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/illumina/RS30_RS31_humancellEP/GEX/hotspot/hl60_megamega_modlist.csv")
+
+# split modules into individual lists, clean up (depending on module csv format)
 mega_mod1 <- c(hl60_mods$Module.1)
 mega_mod1 <- mega_mod1[mega_mod1 != ""]
 
@@ -76,6 +76,7 @@ mega_mod17 <- mega_mod17[mega_mod17 != ""]
 mega_mod18 <- c(hl60_mods$Module.18)
 mega_mod18 <- mega_mod18[mega_mod18 != ""]
 
+# load C1498 modules and convert to human gene orthologs
 c1498_mods <- read.csv("/dartfs/rc/lab/M/McKennaLab/projects/hannah/aml/analysis/c1498_lineage_NEW/rs22_rs28/trees_res1/HotSpot/241113_rs22_rs28_combo_joined_rm_MT-RB/24114_rs22_rs28_combo_joined_rm_MT_RB_hotspot_modules_annotated.csv")
 f1_mega_mods <- c1498_mods[c1498_mods$clone == "F1_Vanilla_rmWT_megatree", ]
 f6_mega_mods <- c1498_mods[c1498_mods$clone == "F6_Vanilla_rmWT_megatree", ]
@@ -102,6 +103,7 @@ f6m3 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 3]))
 f6m4 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 4]))
 f6m5 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 5]))
 
+# load pre-resistant signature genes
 pre_resist_sig <- c("CLSTN2", "SPATA6", "SGCZ", "PRICKLE1", "IGF2BP2", "CAMK2D", "MEIS1", "KCND2", "MKX", "BMP2", "TRHDE", "APBA2", "PPFIA2", "CPNE8", "PON2", "LAMP5", "LNCAROD", "CPLANE1", "HOXB-AS3", "NAV3", "SDK1", "IRF8", "CES1", "PTPRN2", "HIST1H1D", "NCAM1", "LHX2", "SASH1", "AK1", "ELANE", "PPDPF", "UNCX", "CFD", "AC107223.1", "EXT1", "BEX3", "CLEC11A", "LINC02169", "TNS3", "TTC28", "KLHL29", "CKAP4", "AL163541.1", "PRDX2", "BEX1", "MAP1LC3A", "HOXA9", "PSD3", "AC090796.1", "SERPINB6", "WDR49", "ANXA2", "CD36", "MEF2C", "SLC35F1", "HNMT", "AL713998.1", "MRAS", "DAPK1", "DTNA", "ACAA2", "HLA-B", "MGMT", "ASGR2", "STARD13")
 
 
@@ -133,7 +135,7 @@ clin_val_info <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/ot
 clin_val_info_min <- clin_val_info[, c(1,2,5,6,7,8,9,14,15,18,49,50,51,52,53,54,55,57,58,59,64)]
 discovery_info <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/other/c1498_hl60_module_analysis/TARGET_AML_discovery_clindata.csv")
 discovery_info_min <- discovery_info[, c(1,2,5,6,7,8,9,14,15,18,49,50,51,52,53,54,55,57,58,59,64)]
-#merge them, get rid of duplicate rows
+#get rid of duplicate rows, clean things up, then merge
 clin_val_info_min$MRD...at.end.of.course.1[clin_val_info_min$MRD...at.end.of.course.1 == ""] <- NA
 discovery_info_min$MRD...at.end.of.course.1[discovery_info_min$MRD...at.end.of.course.1 == ""] <- NA
 clin_val_info_min$MRD...at.end.of.course.2[clin_val_info_min$MRD...at.end.of.course.2 == ""] <- NA
@@ -175,7 +177,7 @@ target_zscores_matched <- target_zscores_matched[, -1]
 score_df <- as.data.frame(names(target_zscores_matched[, -2203]))
 names(score_df) <- "patient"
 
-
+# add patient scores for modules and gene sets (not a great method, but it works)
 pre_resist_data <- target_zscores_matched[target_zscores_matched$hgnc_symbol %in% pre_resist_sig, ]
 rownames(pre_resist_data) <- pre_resist_data$hgnc_symbol
 pre_resist_data <- pre_resist_data[, -2203]
@@ -214,11 +216,12 @@ score_df$Sample_ID <- score_df$patient
 score_df$Sample_ID <- gsub('\\.', '-', score_df$Sample_ID)
 score_df <- score_df %>% inner_join(clin_data_full, by = c("Sample_ID" = "SAMPLE_ID"))
 
-#remove the few samples with sorted info
+#remove the few samples with sorted samples (unclear how they fit in with the rest of the patient data)
 score_df_nosort <- score_df[!grepl("Sort", score_df$PATIENT_ID),]
 score_df_nosort <- score_df_nosort[!grepl("sort", score_df_nosort$PATIENT_ID),]
+score_df <- score_df_nosort
 
-# create sample type-specific score dataframes
+# split into dfs based on sample type
 post_tx_bm <- score_df[score_df$SAMPLE_TYPE %in% "Blood Derived Cancer - Bone Marrow, Post-treatment", ]
 post_tx_blood <- score_df[score_df$SAMPLE_TYPE %in% "Blood Derived Cancer - Peripheral Blood, Post-treatment", ]
 dx_bm <- score_df[score_df$SAMPLE_TYPE %in% "Primary Blood Derived Cancer - Bone Marrow", ] 
@@ -232,8 +235,9 @@ all_dx <- score_df[score_df$SAMPLE_TYPE %in% c("Primary Blood Derived Cancer - P
 model <- coxph(Surv(months_to_follow_up, status) ~ AGE + SEX + prot_11s + pre_resist, data = dx_bm)
 ggforest(model, data = dx_bm) + theme_cowplot()
 
-#with risk group 
+# with risk group 
 dx_bm_w_riskcat <- dx_bm[!is.na(dx_bm$Risk.group), ]
+# remove unclear risk group categories
 dx_bm_w_riskcat <- dx_bm_w_riskcat[dx_bm_w_riskcat$Risk.group %nin% c("", "10", "30"), ]
 dx_bm_w_riskcat$Risk.group <- factor(dx_bm_w_riskcat$Risk.group, levels = c("Standard Risk", "Low Risk", "High Risk"))
 
@@ -266,7 +270,7 @@ ggsurvplot(survfit(Surv(months_to_follow_up, status) ~ level,
 
 
 ##### expression level violin plots #####
-#by outcome at 5 years post dx
+# by outcome at 5 years post dx, need to pull from follow_up data
 censor_data <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/other/c1498_hl60_module_analysis/clinical.project-target-aml.2024-12-25/follow_up.tsv", sep = "\t")
 censor_data <- censor_data[censor_data$case_submitter_id %in% score_df$PATIENT_ID, ]
 censor_data_timetoevent <- censor_data[censor_data$days_to_first_event != "'--", c(2,18)]
@@ -281,12 +285,12 @@ first_event_within5$yr5_status <- first_event_within5$first_event
 yr5_status <- rbind(no_event_within5, first_event_within5)
 yr5_status$yr5_status[yr5_status$yr5_status %in% c("Death", "Death without Remission")] <- "Death"
 score_df_5yr <- score_df %>% inner_join(yr5_status, by = c("PATIENT_ID" = "case_submitter_id"))
-dx_bm_5yr <- score_df_5yr[score_df_5yr$SAMPLE_TYPE %in% "Primary Blood Derived Cancer - Bone Marrow", ] #all unique
-dx_blood_5yr <- score_df_5yr[score_df_5yr$SAMPLE_TYPE %in% "Primary Blood Derived Cancer - Peripheral Blood", ] #all unique
+dx_bm_5yr <- score_df_5yr[score_df_5yr$SAMPLE_TYPE %in% "Primary Blood Derived Cancer - Bone Marrow", ] #check patients are all unique
+dx_blood_5yr <- score_df_5yr[score_df_5yr$SAMPLE_TYPE %in% "Primary Blood Derived Cancer - Peripheral Blood", ] #check patients are all unique
 
 library(rstatix)
 library(ggbeeswarm)
-pairwise.test <- dx_blood_5yr[dx_blood_5yr$yr5_status %nin% "Second Malignant Neoplasm", ] %>% wilcox_test(pre_resist ~ yr5_status, p.adjust.method = "bonferroni")
+pairwise.test <- dx_blood_5yr[dx_blood_5yr$yr5_status %nin% "Second Malignant Neoplasm", ] %>% wilcox_test(pre_resist ~ yr5_status, p.adjust.method = "bonferroni") 
 pairwise.test <- pairwise.test[pairwise.test$p.adj.signif != "ns", ]
 ggplot(dx_blood_5yr[dx_blood_5yr$yr5_status %nin% "Second Malignant Neoplasm", ], aes(x=factor(yr5_status, levels = c("DF", "Death", "Induction Failure", "Relapse")), y=pre_resist)) + 
   geom_violin(aes(fill = yr5_status), trim=TRUE, scale = "width") +
@@ -310,7 +314,7 @@ ggplot(dx_bm_5yr[dx_bm_5yr$yr5_status %nin% "Second Malignant Neoplasm", ], aes(
 
 
 ##### calculate correlation between gene set expression and clinical factors #####
-corr_df_bm <- dx_bm_subset_w_pcts[, c(2,37,47,86,87)]
+corr_df_bm <- dx_bm_subset_w_pcts[, c(2,37,47,86,87)] #get columns of interest
 corr_df_blood <- dx_blood_subset_w_pcts[, c(2,37,47,86,87)]
 
 corr_num_factors <- cor(corr_df_blood, method = "kendall")
