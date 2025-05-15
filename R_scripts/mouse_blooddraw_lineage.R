@@ -17,7 +17,6 @@ library(ggalluvial)
 library(tidyr)
 library(vegan)
 library(Biostrings)
-library(ggalluvial)
 `%nin%` = Negate(`%in%`)
 
 ##### load and prep data #####
@@ -37,7 +36,7 @@ rlp_43 <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/illumina/
 rlp_57 <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/illumina/RS36_blooddraws/rlp_d57_castags.csv")
 rlp_67 <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/illumina/RS36_blooddraws/rlp_d67_castags.csv")
 
-castag_masterlist <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/illumina/RS36_blooddraws/rs24_rs19_tagmasterlist_w_founders_120924.csv", row.names = 1)
+castag_masterlist <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/illumina/RS36_blooddraws/rs24_rs19_tagmasterlist_w_founders_120924.csv", row.names = 1) #founder-associated clone tags from bulk sequencing
 castag_masterlist_min <- castag_masterlist[, 1:2]
 
 # filter reads
@@ -84,6 +83,7 @@ rlp67 <- as.data.frame(table(rlp_67$rc_castag)) %>%
   filter(Freq > 2) %>%
   filter(!grepl("-{2,14}", Var1))
 
+# join with castag_masterlist 
 np28_sub <- np_28 %>% inner_join(castag_masterlist_min, by = c("rc_castag" = "tag")) %>% filter(rc_castag %in% np28$Var1)
 np43_sub <- np_43 %>% inner_join(castag_masterlist_min, by = c("rc_castag" = "tag")) %>% filter(rc_castag %in% np43$Var1)
 np57_sub <- np_57 %>% inner_join(castag_masterlist_min, by = c("rc_castag" = "tag")) %>% filter(rc_castag %in% np57$Var1)
@@ -100,6 +100,7 @@ rlp67_sub <- rlp_67 %>% inner_join(castag_masterlist_min, by = c("rc_castag" = "
 
 
 ##### f1 v f6 line plot #####
+#mouse matching
 #np = M1
 #lp = M2
 #rp = M3
@@ -116,9 +117,10 @@ RP13 <- RP_13[, c(1,2,19,20)]
 LP13 <- LP_13[, c(1,2,19,20)]
 RLP13 <- RLP_13[, c(1,2,19,20)]
 
-clone_ids <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/other/neoclone_IDs.csv", header = TRUE, row.names = 1)
+clone_ids <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/other/neoclone_IDs.csv", header = TRUE, row.names = 1) #pre-identified founder tags
 clone_ids <- clone_ids[clone_ids$clone %in% c(1,5,6,11), ]
 
+# prep data for each mouse/timepoint, not a great method but it works for now
 np13_sub_table <- as.data.frame(table(NP13$ftag))
 np13_sub_table <- np13_sub_table %>% inner_join(clone_ids, by = c("Var1" = "ID"))
 np13_counts <- np13_sub_table %>%
@@ -181,6 +183,7 @@ np67_sub_table <- np67_sub_table%>%
   mutate(ratio = as.numeric(F1) / (as.numeric(F6)+as.numeric(F1)))
 np67_sub_table$timepoint <- 67
 
+# individual mouse line plot
 np_lineplot <- rbind(np13_sub_table, np28_sub_table, np43_sub_table, np57_sub_table, np67_sub_table)
 
 
@@ -234,6 +237,7 @@ rp50_sub_table <- rp50_sub_table%>%
   mutate(ratio = as.numeric(F1) / (as.numeric(F6)+as.numeric(F1)))
 rp50_sub_table$timepoint <- 50
 
+# individual mouse line plot
 rp_lineplot <- rbind(rp13_sub_table, rp28_sub_table, rp43_sub_table, rp50_sub_table)
 
 
@@ -278,6 +282,7 @@ lp67_sub_table <- lp67_sub_table%>%
   mutate(ratio = as.numeric(F1) / (as.numeric(F6)+as.numeric(F1)))
 lp67_sub_table$timepoint <- 67
 
+# individual mouse line plot
 lp_lineplot <- rbind(lp13_sub_table, lp28_sub_table, lp67_sub_table)
 
 
@@ -332,9 +337,10 @@ rlp67_sub_table <- rlp67_sub_table%>%
   mutate(ratio = as.numeric(F1) / (as.numeric(F6)+as.numeric(F1)))
 rlp67_sub_table$timepoint <- 67
 
+# individual mouse line plot
 rlp_lineplot <- rbind(rlp13_sub_table, rlp28_sub_table, rlp57_sub_table, rlp67_sub_table)
 
-
+# combine mice for 1 plot
 lineplot_full <- rbind(np_lineplot, rp_lineplot, lp_lineplot, rlp_lineplot)
 ggplot(lineplot_full, aes(x = timepoint, y = ratio, group = mouse)) +
   geom_line(aes(color = mouse), linewidth = 1) +
@@ -346,7 +352,7 @@ ggplot(lineplot_full, aes(x = timepoint, y = ratio, group = mouse)) +
 
 
 ##### fish/alluvial type plots for clone proportion over time #####
-
+# prep data, again not the best method but it works
 np28_sub_table <- as.data.frame(table(np28_sub$rc_castag))
 np28_sub_table <- np28_sub_table %>% inner_join(castag_masterlist_min, by = c("Var1" = "tag"))
 np28_counts <- np28_sub_table %>%
@@ -375,6 +381,7 @@ np67_counts <- np67_sub_table %>%
   summarize(Mean = mean(Freq))
 names(np67_counts) <- c("Clone", 67)
 
+# merge the different timepoints
 np_counts <- np28_counts %>% full_join(np43_counts, by = "Clone")
 np_counts <- np_counts %>% full_join(np57_counts, by = "Clone")
 np_counts <- np_counts %>% full_join(np67_counts, by = "Clone")
@@ -384,12 +391,13 @@ np_plot_prop_df <- np_counts %>%
   pivot_longer(!Clone, names_to = "timepoint", values_to = "prop")
 np_plot_prop_df$timepoint <- as.numeric(np_plot_prop_df$timepoint)
 
+# plot
 ggplot(np_plot_prop_df, aes(y = prop, x = timepoint, fill = Clone)) +
   geom_alluvium(aes(alluvium = Clone), alpha= .9, color = "black") +
   scale_y_continuous(expand = c(0,0)) +
   cowplot::theme_minimal_hgrid() + theme_cowplot() + ylab("Proportion of reads")
 
-
+# remaining mice
 rp28_sub_table <- as.data.frame(table(rp28_sub$rc_castag))
 rp28_sub_table <- rp28_sub_table %>% inner_join(cell_castags, by = c("Var1" = "CasTag"))
 rp28_counts <- rp28_sub_table %>%
