@@ -13,7 +13,7 @@
 
 - Included are data and scripts used to analyze data and generate figures
   - R scripts
-    - [lineage_seq_processing.R](R_scripts/lineage_seq_processing.R): extracting FLARE lineage data from [SingleCellLineage](https://github.com/mckennalab/SingleCellLineage) output
+    - [lineage_seq_processing.R](R_scripts/lineage_seq_processing.R): extracting FLARE lineage data from [SingleCellLineage](https://github.com/mckennalab/SingleCellLineage) output for characterizing editing patterns
     - [lineage_recorder_editing_plots.R](R_scripts/lineage_recorder_editing_plots.R): plotting FLARE barcode editing
     - [single_cell_GEX_initial_processing.R](R_scripts/single_cell_GEX_initial_processing.R): initial scRNA-seq analysis post CellRanger
     - [single_cell_lineage_analysis.R](R_scripts/single_cell_lineage_analysis.R): integration and downstream analysis of single cell lineage and transciptomics
@@ -22,3 +22,28 @@
     - [survival_analysis_TARGET.R](R_scripts/survival_analysis_TARGET.R): survival analysis using the TARGET AML patient cohort
   - Trees
     - Newick files for FLARE lineage trees
+
+## Analysis workflow (for single cell FLARE tracing)
+### Founder-level lineage analysis
+1. Initial processing with [SingleCellLineage](https://github.com/mckennalab/SingleCellLineage)
+2. Filtering, noise-reduction, and QC with script to be added
+3. Sequence and UMI correction
+4. Founder tag clustering with Louvain algorithm
+5. Founder assignment
+
+### Clone-level lineage analysis
+1. Initial processing with [SingleCellLineage](https://github.com/mckennalab/SingleCellLineage)
+2. Filtering, noise-reduction, and QC with script to be added
+3. Sequence and UMI correction
+4. Clone tag clustering with Louvain algorithm
+5. Clone assignment
+   
+### Phylogenetic reconstruction
+1. Cassiopeia's greedy vanilla solver using lineage recorder indels
+2. Generation of founder-wide trees with script to be added
+3. Generation of population-wide trees with script to be added
+
+### Single cell GEX + FLARE lineage integration
+1. Generate initial Seurat objects with [single_cell_GEX_initial_processing.R](R_scripts/single_cell_GEX_initial_processing.R)
+2. Add founder and clone assignments to cells with [single_cell_lineage_analysis.R](R_scripts/single_cell_lineage_analysis.R)
+3. Downstream analysis (GSEA, PATH, Hotspot gene modules, etc.)
