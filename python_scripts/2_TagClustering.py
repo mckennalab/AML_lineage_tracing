@@ -3,10 +3,12 @@
 
 ### TAG CLUSTERING 
 ## Cluster founder tags with additional filtering to identify founders in HL60 dataset
-## Cluster cas-tags cleaned from 1_LineagePreprocessing 
-## Clean cas-tag / founders --> cas-tags should uniquely map to a single founder. 
+## Cluster clone-tags cleaned from 1_LineagePreprocessing 
+## Clean clone-tag / founders --> clone-tags should uniquely map to a single founder. 
 
 ## Final dataset generation. 
+
+## NOTE: Clone-tags are interchangeably referred to as cas-tags 
 
 #===========================================================================
 
@@ -91,12 +93,12 @@ res_clean.to_csv(f'{adir}/241211_hl60s_intBC_to_founders_clustering_res1_CLEAN.c
 
 #===========================================================================
 
-# Final Cleaning - make sure cas-tags map to cells belonging to a single founder. 
+# Final Cleaning - make sure clone-tags map to cells belonging to a single founder. 
 
-### Input: qc allele table and qc cas-tags from 1_LineagePreprocessing.py. 
-### Output: Unique mapping of cas-tags per founder and cleaned allele table. 
+### Input: qc allele table and qc clone-tags from 1_LineagePreprocessing.py. 
+### Output: Unique mapping of clone-tags per founder and cleaned allele table. 
 
-# 1. Filter against lineage table and resolve cas-tags to founders. 
+# 1. Filter against lineage table and resolve clone-tags to founders. 
 bc_final_resolved = pd.read_csv(path_to_allele_table) # result of 1_LineagePreprocessing.py
 ct_final = pd.read_csv(path_to_qc_castags) # result of 1_LineagePreprocessing.py
 
@@ -111,7 +113,7 @@ agg_by_founder = all_lin_combined_cln.groupby(['CasTag', 'founder', 'exp']).agg(
 
 cutoff = 0.5 # adjust cutoff depending on visualization, expected number of founders, etc. 
 
-# keep cas-tag + founder-tag pairings with highest identity 
+# keep clone-tag + founder-tag pairings with highest identity 
 agg_by_founder['propUMI'] = agg_by_founder['nUMI'] / agg_by_founder.groupby(['CasTag', 'exp'])['nUMI'].transform(sum)
 agg_by_founder['propReads'] =agg_by_founder['aggRC'] / agg_by_founder.groupby(['CasTag', 'exp'])['aggRC'].transform(sum)
 
@@ -126,15 +128,15 @@ clean[['cellBC', 'CasTag']].to_csv(f'{adir}/241211_hl60s_intBC_to_founders_clust
 
 #===========================================================================
 
-# 1. Clustering cas-tags 
+# 1. Clustering clone-tags 
 
-### Input: cleaned cas-tags from 1_LineagePreprocessing.py that have been discretized to founders and filtered. 
-### Output: cells' louvain clusters and sets of cas-tags. 
+### Input: cleaned clone-tags from 1_LineagePreprocessing.py that have been discretized to founders and filtered. 
+### Output: cells' louvain clusters and sets of clone-tags. 
 
 clean_castags = pd.read_csv(f'{adir}/241211_hl60s_intBC_to_founders_clustering_res1_CLEAN_castags_and_cells.csv', index_col=0)
 ct_clust = do_clusters(clean_castags, res=1, algorithm='louvain')
 
-# 2. OPTIONAL cleaning of cas-tag sets to remove loosely assigned cells (i.e. with one tag that is lowly represented in the cluster). 
+# 2. OPTIONAL cleaning of clone-tag sets to remove loosely assigned cells (i.e. with one tag that is lowly represented in the cluster). 
 
 ct_expanded = expand_dataframe(ct_clust, 'CasTag') # removed singletons (unclustered cells)
 ct_expanded['nCells'] = ct_expanded.groupby('louvain').cellBC.transform('nunique')
@@ -164,7 +166,7 @@ cas_clusters_cleaned.to_csv(f'{adir}/241211_hl60s_final_cas_clone_assignments_cl
 
 # Final dataset included cellBC + intBC + allele + cas-clone + founder assignments 
 
-### Input: Final cleaned cas-tags with assigned clones and final cleaned founder tags with assigned founder groups. 
+### Input: Final cleaned clone-tags with assigned clones and final cleaned founder tags with assigned founder groups. 
 ### Output: Final annotated allele table with all lineage information. 
 
 # check that the cas-clones are discrete to one founder 

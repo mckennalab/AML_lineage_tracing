@@ -16,6 +16,9 @@ from tqdm import tqdm
 import datetime
 import networkx as nx 
 
+### NOTE: cas-tags == clone-tags 
+
+
 ### Lineage Processing Functions 
 def contains_pattern(pattern, string):
     return re.search(pattern, string) is not None

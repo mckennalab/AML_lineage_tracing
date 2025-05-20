@@ -5,6 +5,8 @@
 # Save trees as newick strings 
 # Plot trees with metadata 
 
+## NOTE: Clone-tags are interchangeably referred to as cas-tags 
+
 #===========================================================================
 
 

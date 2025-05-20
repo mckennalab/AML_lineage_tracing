@@ -1,7 +1,9 @@
 #===========================================================================
 
 ### LINEAGE PREPROCESSING 
-# Take output from SingleCellLineage pipeline and do QC with cassiopeia preprocessing pipeline (for lineage) and custom QC for cas-tags. 
+# Take output from SingleCellLineage pipeline and do QC with cassiopeia preprocessing pipeline (for lineage) and custom QC for clone-tags. 
+
+## NOTE: Clone-tags are interchangeably referred to as cas-tags 
 
 #===========================================================================
 
@@ -129,7 +131,7 @@ bc_final_resolved = barcodes_final_df.merge(ft_thresh[['cellBC', 'clone']], on=[
 # Clone Tag Processing 
 
 ### Input: .stats file from SingleCellLineage 
-### Output: Cleaned dataframe with cells and cas-tags. 
+### Output: Cleaned dataframe with cells and clone-tags. 
 
 # 1. Initial Cleaning 
 
