@@ -20,18 +20,13 @@
     - [mouse_blooddraw_lineage.R](R_scripts/mouse_blooddraw_lineage.R): analysis of FLARE bulk sequencing data from longitudinal blood samples
     - [module_overlap_analysis.R](R_scripts/module_overlap_analysis.R): computing Hotspot gene module overlaps
     - [survival_analysis_TARGET.R](R_scripts/survival_analysis_TARGET.R): survival analysis using the TARGET AML patient cohort
+  - Python scripts
+    - 
   - Trees
     - Newick files for FLARE lineage trees
 
 ## Analysis workflow (for single cell FLARE tracing)
-### Founder-level lineage analysis
-1. Initial processing with [SingleCellLineage](https://github.com/mckennalab/SingleCellLineage)
-2. Filtering, noise-reduction, and QC with script to be added
-3. Sequence and UMI correction
-4. Founder tag clustering with Louvain algorithm
-5. Founder assignment
-
-### Clone-level lineage analysis
+### Founder/Clone-level lineage analysis
 1. Initial processing with [SingleCellLineage](https://github.com/mckennalab/SingleCellLineage)
 2. Filtering, noise-reduction, and QC with [1_LineagePreprocessing.py](python_scripts/1_LineagePreprocessing.py)
 3. Clone tag clustering with Louvain algorithm and clone assignment [2_TagClustering.py](python_scripts/2_TagClustering.py)
@@ -44,5 +39,6 @@
 ### Single cell GEX + FLARE lineage integration
 1. Generate initial Seurat objects with [single_cell_GEX_initial_processing.R](R_scripts/single_cell_GEX_initial_processing.R)
 2. Add founder and clone assignments to cells with [single_cell_lineage_analysis.R](R_scripts/single_cell_lineage_analysis.R)
-3. Downstream analysis (GSEA, PATH, Hotspot gene modules, etc.)      
-       a. HotSpot Modules [4_HotSpotModules.py](python_scripts/4_HotSpotModules.py)
+3. Downstream analysis (GSEA, PATH, Hotspot gene modules, etc.)     
+   - PATH analysis in [single_cell_lineage_analysis.R](R_scripts/single_cell_lineage_analysis.R)
+   - HotSpot Modules [4_HotSpotModules.py](python_scripts/4_HotSpotModules.py)
