@@ -33,17 +33,16 @@
 
 ### Clone-level lineage analysis
 1. Initial processing with [SingleCellLineage](https://github.com/mckennalab/SingleCellLineage)
-2. Filtering, noise-reduction, and QC with script to be added
-3. Sequence and UMI correction
-4. Clone tag clustering with Louvain algorithm
-5. Clone assignment
+2. Filtering, noise-reduction, and QC with [1_LineagePreprocessing.py](python_scripts/1_LineagePreprocessing.py)
+3. Clone tag clustering with Louvain algorithm and clone assignment [2_TagClustering.py](python_scripts/2_TagClustering.py)
    
-### Phylogenetic reconstruction
+### Phylogenetic reconstruction, see [3_Trees.py](python_scripts/3_Trees.py)
 1. Cassiopeia's greedy vanilla solver using lineage recorder indels
-2. Generation of founder-wide trees with script to be added
-3. Generation of population-wide trees with script to be added
+2. Generation of founder-wide trees
+3. Generation of population-wide trees
 
 ### Single cell GEX + FLARE lineage integration
 1. Generate initial Seurat objects with [single_cell_GEX_initial_processing.R](R_scripts/single_cell_GEX_initial_processing.R)
 2. Add founder and clone assignments to cells with [single_cell_lineage_analysis.R](R_scripts/single_cell_lineage_analysis.R)
 3. Downstream analysis (GSEA, PATH, Hotspot gene modules, etc.)
+       a. HotSpot Modules [4_HotSpotModules.py](python_scripts/4_HotSpotModules.py)
