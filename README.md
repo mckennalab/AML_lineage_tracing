@@ -22,9 +22,9 @@
     - [survival_analysis_TARGET.R](R_scripts/survival_analysis_TARGET.R): survival analysis using the TARGET AML patient cohort
   - Python scripts
     - [AML_lineage_utilities.py](python_scripts/AML_lineage_utilities.py): Functions for processing FLARE lineage data.
-    - [1_LineagePreprocessing.py](python_scripts/1_LineagePreprocessing.py): All preprocessing for FLARE lineage data, including indel barcodes and clone-tags.     
+    - [1_LineagePreprocessing.py](python_scripts/1_LineagePreprocessing.py): All preprocessing for FLARE lineage data, including indel barcodes and clone tags.     
     - [2_TagClustering.py](python_scripts/2_TagClustering.py): Assigning cells to founders and clones based on hierarchical FLARE lineage data.    
-    - [3_Trees.py](python_scripts/3_Trees.py): Generate single-cell lineage trees from indel barcodes for clones and founders.    
+    - [3_Trees.py](python_scripts/3_Trees.py): Generate single cell lineage trees from indel barcodes for clones and founders.    
     - [4_HotSpotModules.py](python_scripts/4_HotSpotModules.py): Generate modules using HotSpot.    
   - Trees
     - Newick files for FLARE lineage trees
