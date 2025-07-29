@@ -1,63 +1,30 @@
 # Hotspot module overlap analysis
 library(GeneOverlap)
+library(UpSetR)
+library(ComplexHeatmap)
 
 # load HL60 modules
 hl60_mods <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/illumina/RS30_RS31_humancellEP/GEX/hotspot/hl60_megamega_modlist.csv")
 
 # splitting modules, cleaning up the data (depends on module csv format)
 mega_mod1 <- c(hl60_mods$Module.1)
-mega_mod1 <- mega_mod1[mega_mod1 != ""]
-
 mega_mod2 <- c(hl60_mods$Module.2)
-mega_mod2 <- mega_mod2[mega_mod2 != ""]
-
 mega_mod3 <- c(hl60_mods$Module.3)
-mega_mod3 <- mega_mod3[mega_mod3 != ""]
-
 mega_mod4 <- c(hl60_mods$Module.4)
-mega_mod4 <- mega_mod4[mega_mod4 != ""]
-
 mega_mod5 <- c(hl60_mods$Module.5)
-mega_mod5 <- mega_mod5[mega_mod5 != ""]
-
 mega_mod6 <- c(hl60_mods$Module.6)
-mega_mod6 <- mega_mod6[mega_mod6 != ""]
-
 mega_mod7 <- c(hl60_mods$Module.7)
-mega_mod7 <- mega_mod7[mega_mod7 != ""]
-
 mega_mod8 <- c(hl60_mods$Module.8)
-mega_mod8 <- mega_mod8[mega_mod8 != ""]
-
 mega_mod9 <- c(hl60_mods$Module.9)
-mega_mod9 <- mega_mod9[mega_mod9 != ""]
-
 mega_mod10 <- c(hl60_mods$Module.10)
-mega_mod10 <- mega_mod10[mega_mod10 != ""]
-
 mega_mod11 <- c(hl60_mods$Module.11)
-mega_mod11 <- mega_mod11[mega_mod11 != ""]
-
 mega_mod12 <- c(hl60_mods$Module.12)
-mega_mod12 <- mega_mod12[mega_mod12 != ""]
-
 mega_mod13 <- c(hl60_mods$Module.13)
-mega_mod13 <- mega_mod13[mega_mod13 != ""]
-
 mega_mod14 <- c(hl60_mods$Module.14)
-mega_mod14 <- mega_mod14[mega_mod14 != ""]
-
 mega_mod15 <- c(hl60_mods$Module.15)
-mega_mod15 <- mega_mod15[mega_mod15 != ""]
-
 mega_mod16 <- c(hl60_mods$Module.16)
-mega_mod16 <- mega_mod16[mega_mod16 != ""]
-
 mega_mod17 <- c(hl60_mods$Module.17)
-mega_mod17 <- mega_mod17[mega_mod17 != ""]
-
 mega_mod18 <- c(hl60_mods$Module.18)
-mega_mod18 <- mega_mod18[mega_mod18 != ""]
 
 # load C1498 modules
 c1498_mods <- read.csv("/dartfs/rc/lab/M/McKennaLab/projects/hannah/aml/analysis/c1498_lineage_NEW/rs22_rs28/trees_res1/HotSpot/241113_rs22_rs28_combo_joined_rm_MT-RB/24114_rs22_rs28_combo_joined_rm_MT_RB_hotspot_modules_annotated.csv")
@@ -87,6 +54,14 @@ f6m3 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 3]))
 f6m4 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 4]))
 f6m5 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 5]))
 
+##### upsetR plot #####
+mods <- list(c1498_persistence = f1m1, c1498_in_vivo = f6m1, hl60_resistance = mega_mod2)
+mods_mat <- make_comb_mat(mods, mode = "distinct")
+UpSet(t(mods_mat), set_order = c("c1498_persistence", "c1498_in_vivo", "hl60_resistance")) #figure 5A
+
+mods_degs <- list(hl60_resistance = mega_mod2, h1_pre_exp = h1_degs_pre_exp$rowname, h1_control = h1_degs_control$rowname)
+mods_mat <- make_comb_mat(mods_degs, mode = "distinct")
+UpSet(t(mods_mat), set_order = c("hl60_resistance", "h1_pre_exp", "h1_control")) #figure 5C
 
 ##### geneoverlap package #####
 c1498_list <- list(f1m1, f1m2, f1m3, f1m4, f6m1, f6m2, f6m3, f6m4, f6m5)
