@@ -14,9 +14,8 @@ library(ggnewscale)
 library(grid)
 library(scCustomize)
 library(cowplot)
-library(pals)
-library(forcats)
-library(ggsignif)
+library(rstatix)
+library(ggpubr)
 `%nin%` = Negate(`%in%`)
 
 
@@ -151,6 +150,32 @@ mega_tree <- ape::read.tree("/dartfs/rc/lab/M/McKennaLab/projects/hannah/aml/ana
 mega_tree_6 <- ape::read.tree("/dartfs/rc/lab/M/McKennaLab/projects/hannah/aml/analysis/c1498_lineage_NEW/rs22_rs28/trees_res1/F6_newick/rs22_rs28_F6_Vanilla_rmWT_megatree.newick")
 
 
+# function to get autocorrelations 
+path_autocorr <- function(tree, metadata){ #prepping tree and running path_inf
+  X <-  apply(metadata[tree$tip.label, -1], 2, as.numeric)
+  X <- as(X, 'sparseMatrix')
+  X <- cbind(PATH::catMat(metadata[tree$tip.label, ]$group), X)
+  Winv <- inv_tree_dist(tree, node = TRUE, norm = FALSE)
+  modxcor <- xcor(X, Winv)
+  Idf <- reshape2::melt(modxcor$phy_cor, 
+                      value.name = "I")
+  Zdf <- reshape2::melt(modxcor$Z.score, 
+                      value.name = "Z")
+  Pdf <- reshape2::melt(modxcor$one.sided.pvalue, value.name='p.val')
+  Zp_df <- full_join(Zdf, Pdf, by=c('Var1', 'Var2'))
+  df <- full_join(Idf, Zp_df, by=c("Var1", "Var2"))
+  df <- df %>% mutate(Var1 = as.factor(Var1), 
+                      Var2 = as.factor(Var2))
+  df$adj_p.val <-p.adjust(df$p.val, method="BH")
+  auto_df <- df %>%
+    filter(Var1 == Var2) %>%
+    filter(adj_p.val < 0.05)
+  auto_df <- auto_df[, -1]
+
+  return(auto_df)
+}
+
+# does the same thing as the function, for when you'd rather do it step by step or want the cross correlations
 X1 <-  apply(rs22_new_md[mega_tree$tip.label, 4:3003], 2, as.numeric)
 X1 <- as(X1, 'sparseMatrix')
 X1 <- cbind(PATH::catMat(rs22_new_md[mega_tree$tip.label, ]$group), X1) 
@@ -256,35 +281,100 @@ Heatmap(res_mat,
         name='Phylogenetic Correlation Z-score')
 
 
+##### State transitions + permutation analysis #####
+new_md <- FetchData(f1, vars=c("clust_region", "clust_region_fine"), layer='data') # fetch data 
+new_md$bc_stripped <- gsub('_\\d', '', rownames(new_md)) #remove any numbers etc. from the cellID
+new_md$rows <- rownames(new_md)
+new_md <- merge(new_md, rosetta, by.x='bc_stripped', by.y = 'V1') # merge with whitelist 
+new_md$exp <- "rs22"
+new_md$lin_cellID <- paste0(new_md$exp, '_' , new_md$V2) # this specific dataset has a prefix, so add the experimental prefix (i.e. rs22_barcodestring) 
+rownames(new_md) <- new_md$lin_cellID
 
-##### adding hotpot modules to seurat objects #####
-mods <- read.csv("/dartfs/rc/lab/M/McKennaLab/projects/hannah/aml/analysis/c1498_lineage_NEW/rs22_rs28/trees_res1/HotSpot/241113_rs22_rs28_combo_joined_rm_MT-RB/24114_rs22_rs28_combo_joined_rm_MT_RB_hotspot_modules_annotated.csv")
-f1_mega_mods <- mods[mods$clone == "F1_Vanilla_rmWT_megatree", ]
-f6_mega_mods <- mods[mods$clone == "F6_Vanilla_rmWT_megatree", ]
+# prune the tree to only include leaves of interest (control cells only for fig. S5A)
+f1.1_todrop <- f1.1_tree$tip.label[f1.1_tree$tip.label %nin% rownames(new_md)]
+ctrl_f1.1_tree <- ape::drop.tip(f1.1_tree, f1.1_todrop)
 
-hotspot_f1_mod1_ <- list(c(f1_mega_mods$Gene[f1_mega_mods$Module == 1]))
-hotspot_f1_mod2_ <- list(c(f1_mega_mods$Gene[f1_mega_mods$Module == 2]))
-hotspot_f1_mod3_ <- list(c(f1_mega_mods$Gene[f1_mega_mods$Module == 3]))
-hotspot_f1_mod4_ <- list(c(f1_mega_mods$Gene[f1_mega_mods$Module == 4]))
-hotspot_f1_mod5_ <- list(c(f1_mega_mods$Gene[f1_mega_mods$Module == 5]))
-hotspot_f1_auto_no_mod_ <- list(c(f1_mega_mods$Gene[f1_mega_mods$Module == -1]))
+transition_matrix <- function(tree, metadata){ #prepping tree and running path_inf
+  tree_md <- tree
+  clust_region <- metadata[tree_md$tip.label, ]$clust_region
+  tree_md$clust_region <- clust_region
+  tree_md$edge.length <- rep(1, length(tree_md$edge))
+  Pinf <- PATH_inf(tree = tree_md, cell_states = "clust_region", impute_branches = TRUE, sample_rate_est = 10^-6)
+  return(Pinf$Pt)
+}
 
-hotspot_f6_mod1_ <- list(c(f6_mega_mods$Gene[f6_mega_mods$Module == 1]))
-hotspot_f6_mod2_ <- list(c(f6_mega_mods$Gene[f6_mega_mods$Module == 2]))
-hotspot_f6_mod3_ <- list(c(f6_mega_mods$Gene[f6_mega_mods$Module == 3]))
-hotspot_f6_mod4_ <- list(c(f6_mega_mods$Gene[f6_mega_mods$Module == 4]))
-hotspot_f6_mod5_ <- list(c(f6_mega_mods$Gene[f6_mega_mods$Module == 5]))
-hotspot_f6_auto_no_mod_ <- list(c(f6_mega_mods$Gene[f6_mega_mods$Module == -1]))
+perm_tree_test <- function(tree, metadata, nperm){
+  true_transitions <- transition_matrix(tree, metadata) #get actual transition matrix
+  list_set <- list(true_transitions)
+  
+  for(i in 1:nperm){
+    tree_random <- tree
+    tree_random$tip.label <- sample(tree_random$tip.label)
+    list_set[[i+1]] <- transition_matrix(tree_random, metadata)
+  }
+  return(list_set)
+}
 
-DefaultAssay(strict_founder_cells) <- "RNA"
-strict_founder_cells <- AddModuleScore(strict_founder_cells, 
-                                       features = hotspot_f1_mod1_, 
-                                       name = "hotspot_f1_mod1_")
+perm_list <- perm_tree_test(f1.2_tree, new_md, 1000)
 
-# violin plots of module expression
-library(rstatix)
-library(ggbeeswarm)
-library(ggpubr)
+# prepping results for plotting
+perm_df <- data.frame(matrix(ncol=16,nrow=1, dimnames=list(NA, c("adprh2adprh", "adprh2ctrl", "adprh2persist", "adprh2resist", "ctrl2adprh", "ctrl2ctrl", "ctrl2persist", "ctrl2resist", "persist2adprh", "persist2ctrl", "persist2persist", "persist2resist", "resist2adprh", "resist2ctrl", "resist2persist", "resist2resist"))))
+for(perm in 1:length(perm_list)){
+  temp_row <- c()
+  mt <- perm_list[[perm]]
+  for(i in 1:nrow(mt)){
+    for(j in 1:ncol(mt)){
+      val <- mt[i,j]
+      temp_row <- c(temp_row, val)
+    }
+  }
+  if (sum(is.na(temp_row)) == 0) {
+    perm_df <- rbind(perm_df, temp_row)
+  }
+}
+perm_df <- perm_df[-1,] %>% rownames_to_column() # get rid of extra row with NAs
+perm_df <- perm_df[1:7501,] # isolate just the first 7500 permutations
+
+perm_df_longer <- perm_df %>% pivot_longer(!rowname, names_to = "transition", values_to = "prob")
+
+# for plotting
+perm_df_boxplot <- perm_df_longer[perm_df_longer$rowname != 2, ] # isolate permutations
+perm_df_true <- perm_df_longer[perm_df_longer$rowname == 2, ] #isolate true transition probabilities
+
+# get p vals
+perm_df_test <- perm_df[-1,] # remove true transitions
+
+pvals <- c()
+for (i in 2:17){
+  test_mean <- mean(perm_df_test[,i]) # find permutation mean
+  test_diff <- abs(test_mean - perm_df[1, i]) # calculate difference between permutation mean and true transition prob
+  pval <- (sum(perm_df_test[,i] >= (test_mean + test_diff) | perm_df_test[,i] <= (test_mean - test_diff)))/length(perm_df_test[,i]) # calculate p vals
+  pvals <- c(pvals, pval)
+}
+
+pval_df <- data.frame(matrix(unique(perm_df_boxplot$transition), nrow=length(unique(perm_df_boxplot$transition)), byrow=TRUE))
+pval_df$pval <- pvals
+pval_df$pvals_adj <- p.adjust(pval_df$pval, method = "fdr", n = length(pval_df$pval))
+names(pval_df) <- c("transition", "pval", "pval_adj")
+# need to add group1 and group2 for stat_pvalue_manual to be happy
+pval_df$group1 <- 1
+pval_df$group2 <- 1
+
+pval_df <- add_significance(pval_df, "pval_adj", "sig_level")
+pval_df <- pval_df %>%
+    filter(sig_level != "ns")
+
+#plot the spread of tree permutations, true transitions in red
+ggplot(perm_df_boxplot, aes(x=transition, y=prob)) + 
+  geom_boxplot(outlier.size = 0.5, outlier.alpha = 0.5) + 
+  ggplot2::geom_point(perm_df_true, mapping = aes(x=transition, y=prob), color = "red", size = 4) +
+  theme_cowplot() +
+  stat_pvalue_manual(
+  pval_df, x = "transition", y.position = 1.05,
+  label = "sig_level", size = 8) 
+
+
+##### violin plots of Hotspot module expression #####
 vln_df = data.frame(module = strict_founder_cells$hotspot_f1_mod1_1, cluster = strict_founder_cells$group)
 pairwise.test <- vln_df %>% wilcox_test(module ~ cluster, p.adjust.method = "bonferroni")
 pairwise.test <- pairwise.test[pairwise.test$p.adj.signif != "ns", ]
@@ -295,8 +385,6 @@ ggplot(vln_df, aes(x=cluster, y=module)) +
     pairwise.test, label = "p.adj.signif", 
     y.position = c(1.2, 1.3)
   )
-
-
 
 ##### fGSEA #####
 library(msigdbr)
