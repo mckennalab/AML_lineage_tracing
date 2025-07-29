@@ -44,5 +44,5 @@
 1. Generate initial Seurat objects with [single_cell_GEX_initial_processing.R](R_scripts/single_cell_GEX_initial_processing.R)
 2. Add founder and clone assignments to cells with [single_cell_lineage_analysis.R](R_scripts/single_cell_lineage_analysis.R)
 3. Downstream analysis (GSEA, PATH, Hotspot gene modules, etc.)     
-   - PATH analysis in [single_cell_lineage_analysis.R](R_scripts/single_cell_lineage_analysis.R)
+   - PATH, state transitions, GSEA analysis in [single_cell_lineage_analysis.R](R_scripts/single_cell_lineage_analysis.R)
    - HotSpot Modules [4_HotSpotModules.py](python_scripts/4_HotSpotModules.py)
