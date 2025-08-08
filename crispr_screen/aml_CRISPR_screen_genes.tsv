@@ -1,0 +1,380 @@
+mouse_id	human_id	source	organism_of_origin	gene			Controls	
+Lpcat2	LPCAT2	hotspot_mod1	mouse	lysophosphatidylcholine acyltransferase 2			AAVS1-A	Mali_lab_screen control
+Cd7	CD7	hotspot_mod1	mouse	CD7			AAVS1-B	Mali_lab_screen control
+Vim	VIM	hotspot_mod1	mouse	Vimentin			AAVS1-C	Mali_lab_screen control
+Itsn1	ITSN1	hotspot_mod1	mouse	Intersectin 1			AAVS1-D	Mali_lab_screen control
+Slc9a9	SLC9A9	hotspot_mod1	mouse	solute carrier family 9 member A9			NTC-A	Mali_lab_screen control
+Grap2	GRAP2	hotspot_mod1	mouse	GRB2 relatead adaptor protein 2			NTC-B	Mali_lab_screen control
+Pglyrp2	PGLYRP2	hotspot_mod1	mouse	peptidoglycan recognition protein 2			NTC-C	Mali_lab_screen control
+Rapsn	RAPSN	hotspot_mod1	mouse	receptor associated protein of the synapse			NTC-D	Mali_lab_screen control
+Pfn1	PFN1	hotspot_mod1	mouse	profilin 2				
+Actb	ACTB	hotspot_mod1	mouse	Beta actin				
+Tmsb4x	TMSB4X	hotspot_mod1	mouse	thymosin beta 4 X-linked				
+Olfm3	OLFM3	hotspot_mod1	mouse	Olfactomedin 3				
+Fxyd5	FXYD5	hotspot_mod1	mouse	FXYD domain containing ion transport regulator 5				
+Trbc2		hotspot_mod1	mouse	T cell receptor beta constant 2	human version is not a true ortholog			
+Ifitm2		hotspot_mod1	mouse	interferon induced transmembrane protein 2	human version is not a true ortholog			
+Clic1	CLIC1	hotspot_mod1	mouse	chloride intracellular channel 1				
+Rasa2	RASA2	hotspot_mod1	mouse	RAS p21 protein activator 2				
+Tbc1d10c	TBC1D10C	hotspot_mod1	mouse	TBC1 domain family member 10C				
+Tagln2	TAGLN2	hotspot_mod1	mouse	transgelin 2				
+Trat1	TRAT1	hotspot_mod1	mouse	T cell receptor associated transmembrane adaptor 1				
+Cotl1	COTL1	hotspot_mod1	mouse	coactosin like F-actin binding protein 1				
+Cd244a	CD244	hotspot_mod1	mouse	CD244, SLAMF4				
+Cst7	CST7	hotspot_mod1	mouse	Cystain F				
+Fhl2	FHL2	hotspot_mod1	mouse	four and a half LIM domains 2				
+Sytl3	SYLT3	hotspot_mod1	mouse	synaptotagmin like 3				
+S100a11	S100A11	hotspot_mod1	mouse	S100 calcium binding protein A11				
+Crip1	CRIP1	hotspot_mod1	mouse	cysteine rich protein 1				
+Cav2	CAV2	hotspot_mod1	mouse	caveolin 2				
+Cd200r4		hotspot_mod1	mouse	CD200 receptor 4				
+Anxa2	ANXA2	hotspot_mod1	mouse	annexin A2				
+Lgals1	LGALS1	hotspot_mod1	mouse	galectin 1				
+Bbs9	BBS9	hotspot_mod1	mouse	Bardet-Biedl syndrome 9				
+S100a4	S100A4	hotspot_mod1	mouse	S100 calcium binding protein A4				
+Myl6	MYL6	hotspot_mod1	mouse	myosin light chain 6				
+Sugct	SUGCT	hotspot_mod1	mouse	succinyl-coA:glutarate-CoA transferase				
+Tiam1	TIAM1	hotspot_mod1	mouse	TIAM Rac1 associated GEF 1				
+Ighv1-77		hotspot_mod1	mouse	immunoglobulin heavy variable 1-77				
+AI480526	LINC01089	hotspot_mod1	mouse	long intergenic non-protein coding RNA 1089	non protein coding			
+Tubb2a	TUBB2A	hotspot_mod1	mouse	tubulin beta 2A class Iia				
+Igsf5	IGSF5	hotspot_mod1	mouse	immunoglobulin superfamily member 5				
+Atp5o	ATP5O	hotspot_mod1	mouse	ATP synthase peripheral stalk subunit OSCP				
+Slc26a11	SLC26A11	hotspot_mod1	mouse	solute carrier family 29 member 11				
+Cd44	CD44	hotspot_mod1	mouse	CD44				
+Abracl	ABRACL	hotspot_mod1	mouse	ABRA C-terminal like				
+Mir142hg	MIR142HG	hotspot_mod1	mouse	MIR142 host genes	non protein coding			
+Vmn2r96		hotspot_mod1	mouse	vomeronasal 2, receptor 96				
+Morrbid	MORRBID	hotspot_mod1	mouse	MyelOid Rna Regulator of Bim-Induced Death	non protein coding			
+Pde1c	PDE1C	hotspot_mod1	mouse	phosphodiesterase 1C				
+Immp2l	IMMP2L	hotspot_mod1	mouse	inner mitochondrial membrane peptidase subunit 2				
+Slc25a5	SLC25A5	hotspot_mod1	mouse	solute carrier family 25 member 5				
+Arpc2	ARPC2	hotspot_mod1	mouse	actin related protein 2/3 complex subunit 2				
+Arhgap18	ARHGAP18	hotspot_mod1	mouse	rho GTPase acticating protein 18				
+Palld	PALLD	hotspot_mod1	mouse	palladin, cytoskeletal associated protein				
+Itgae	ITGAE	hotspot_mod1	mouse	integrin subunit alpha E				
+Nabp1	NABP1	hotspot_mod1	mouse	nucleic acid binding protein 1				
+Fndc3a	FNDC3A	hotspot_mod1	mouse	fibronectin type III domain containing 3A				
+Eya2	EYA2	hotspot_mod1	mouse	EYA transcriptional coactivator and phosphatase 2				
+Galnt3	GALNT3	hotspot_mod1	mouse	polypeptide N-acetylgalactosaminyltransferase 3				
+Tmem163	TMEM163	hotspot_mod1	mouse	transmembrane protein 163				
+Anxa1	ANXA1	hotspot_mod1	mouse	annexin A1				
+Stat4	STAT4	hotspot_mod1	mouse	signal transducer and activator of transcription 4				
+Ccnd3	CCND3	hotspot_mod1	mouse	cyclin D3				
+Id2	ID2	hotspot_mod1	mouse	inhibitor of DNA binding 2				
+Osgin1	OSGIN1	hotspot_mod1	mouse	oxidative stress induced growth inhibitor 1				
+Ighv1-82		hotspot_mod1	mouse	immunoglobulin heavy variable 1-82				
+Serf2	SERF2	hotspot_mod1	mouse	small EDRK-rich factor 2				
+Gm20627		hotspot_mod1	mouse	predicted gene 20627				
+Sod1	SOD1	hotspot_mod1	mouse	superoxide dismutase 1				
+Card19	CARD19	hotspot_mod1	mouse	caspase recruitment domain family member 19				
+Zyx	ZYX	hotspot_mod1	mouse	zyxin				
+Gm19331		hotspot_mod1	mouse	predicted gene 19331				
+Ppp1ca	PPP1CA	hotspot_mod1	mouse	protein phosphatase 1 catalytic subunit alpha				
+Ms4a4b		hotspot_mod1	mouse	membrane-spanning 4-domains, subfamily A, member 4B				
+Prune2	PRUNE2	hotspot_mod1	mouse	prune homolog 2 with BCH domain				
+Dnajc10	DNAJC10	hotspot_mod1	mouse	DnaJ heat shock protein family (Hsp40) member C10				
+Ahnak	AHNAK	hotspot_mod1	mouse	AHNAK nucleoprotein				
+Frmd4b	FRMD4B	hotspot_mod1	mouse	FERM domain containing 4B				
+Smpdl3a	SMPDL3A	hotspot_mod1	mouse	sphingomyelin phosphodiesterase acid like 3A				
+Phlda1	PHLDA1	hotspot_mod1	mouse	pleckstring homology like domain family A member 1				
+Abl1	ABL1	Mali_lab_screen	human	ABL proto-oncogene 1, non-receptor tyrosine kinase				
+Abl2	ABL2	Mali_lab_screen	human	ABL proto-oncogene 2, non-receptor tyrosine kinase				
+Ada	ADA	Mali_lab_screen	human	adenosine deaminase				
+Alk	ALK	Mali_lab_screen	human	ALK receptor tyrosine kinase / anaplastic lymphoma kinase				
+Ar	AR	Mali_lab_screen	human	androgen receptor				
+Bcl2	BCL2	Mali_lab_screen	human	B cell leukemia/lymphoma 2				
+Braf	BRAF	Mali_lab_screen	human	B-Raf proto-oncogene, serine/threonine kinase				
+Btk	BTK	Mali_lab_screen	human	Bruton tyrosine kinase				
+Cdk4	CDK4	Mali_lab_screen	human	cyclin dependent kinase 4				
+Cdk6	CDK6	Mali_lab_screen	human	cyclin dependent kinase 6				
+Csff1r	CSF1R	Mali_lab_screen	human	colony stimulating factor 1 receptor				
+Csf3r	CSF3R	Mali_lab_screen	human	colony stimulating factor 3 receptor				
+Cyp17a1	CYP17A1	Mali_lab_screen	human	cytochrome p450 family 17 subfamily A member 1				
+Cyp19a1	CYP19A1	Mali_lab_screen	human	cytochrome p450 family 19 subfamily A member 1				
+Dhfr	DHFR	Mali_lab_screen	human	dihydrofolate reductase				
+Dnmt1	DNMT1	Mali_lab_screen	human	DNA methyltransferase 1				
+Dnmt3a	DNMT3a	Mali_lab_screen	human	DNA methylatransferase 3 alpha				
+Dnmt3b	DNMT3b	Mali_lab_screen	human	DNA methylatransferase 3 beta				
+Egfr	EGFR	Mali_lab_screen	human	epidermal growth factor receptor				
+Epha2	EPHA2	Mali_lab_screen	human	EPH receptor A2				
+Erbb2	ERBB2	Mali_lab_screen	human	erb-b1 receptor tyrosine kinase 2				
+Esr1	ESR1	Mali_lab_screen	human	estrogen receptor 1				
+Fgfr1	FGFR1	Mali_lab_screen	human	fibroblast growth factor receptor 1				
+Fgfr2	FGFR2	Mali_lab_screen	human	fibroblast growth factor receptor 2				
+Fgfr3	FGFR3	Mali_lab_screen	human	fibroblast growth factor receptor 3				
+Flt1	FLT1	Mali_lab_screen	human	FMS-like tyrosine kinase 1				
+Flt3	FLT3	Mali_lab_screen	human	FMS-like tyrosine kinase 3				
+Flt4	FLT4	Mali_lab_screen	human	FMS-like tyrosine kinase 4				
+Fyn	FYN	Mali_lab_screen	human	FYN proto-oncogene, Src family tyrosine kinase				
+Gart	GART	Mali_lab_screen	human	phosphoribosylglycinamide formyltransferase				
+Hdac1	HDAC1	Mali_lab_screen	human	histone deacetylase 1				
+Hdac2	HDAC2	Mali_lab_screen	human	histone deacetylase 2				
+Hdac3	HDAC3	Mali_lab_screen	human	histone deacetylase 3				
+Idh1	IDH1	Mali_lab_screen	human	isocitrate dehydrogenase (NADP(+)) 1				
+Idh2	IDH2	Mali_lab_screen	human	isocitrate dehydrogenase (NADP(+)) 2				
+Jak1	JAK1	Mali_lab_screen	human	janus kinase 1				
+Jak2	JAK2	Mali_lab_screen	human	janus kinase 2				
+Jak3	JAK3	Mali_lab_screen	human	janus kinase 3				
+Kdr	KDR	Mali_lab_screen	human	kinase insert domain protein receptor				
+Kit	KIT	Mali_lab_screen	human	KIT proto-oncogene receptor tyrosine kinase				
+Lck	LCK	Mali_lab_screen	human	lymphocyte protein tyrosine kinase, Src fmily tyrosine kinase				
+Map2k1	MAP2K1	Mali_lab_screen	human	mitogen-activated protein kinase kinase 1				
+Map2k2	MAP2K2	Mali_lab_screen	human	mitogen-activated protein kinase kinase 2				
+Met	MET	Mali_lab_screen	human	MET proto-oncogene, receptor tyrosine kinase				
+Mtor	mTOR	Mali_lab_screen	human	mechanistic target of rapamycin kinase				
+Parp1	PARP1	Mali_lab_screen	human	poly (ADP-ribose) polymerase family, member 1				
+Pdgfra	PDGFRa	Mali_lab_screen	human	platelet derived growth factor receptor, alpha polypeptide				
+Pdgfrb	PDGFRb	Mali_lab_screen	human	platelet derived growth factor receptor, beta polypeptide				
+Pigf	PIGF	Mali_lab_screen	human	phosphatydylinositol glycan anchor biosynthesis class F				
+Pik3cd	PIK3CD	Mali_lab_screen	human	phosphatidylinositol-4,5-bisphosphate 3-kinase catalytic subunit delta				
+Psmb5	PSMB5	Mali_lab_screen	human	proteasome (prosome, macropain) subunit, beta type 5				
+Rara	RARA	Mali_lab_screen	human	retinoic acid receptor, alpha				
+Ret	RET	Mali_lab_screen	human	RET proto-oncogene				
+Ros1	ROS1	Mali_lab_screen	human	Ros1 proto-oncogene				
+Smi	SMO	Mali_lab_screen	human	smoothened, frizzled class receptor				
+Src	SRC	Mali_lab_screen	human	Rouse sarcoma oncogene				
+Top1	TOP-1	Mali_lab_screen	human	topoisomerase (DNA) I				
+Top2a	TOP2A	Mali_lab_screen	human	topoisomerase (DNA) II alpha				
+Top2b	TOP2B	Mali_lab_screen	human	topoisomerase (DNA) II beta				
+Tyms	TYMS	Mali_lab_screen	human	thymidylate synthase				
+Vegfa	VEGFA	Mali_lab_screen	human	vascular endothelial growth factor A				
+Vegfb	VEGFB	Mali_lab_screen	human	vascular endothelial growth factor B				
+Yes1	YES1	Mali_lab_screen	human	YES proto-oncogene 1, Src family tyrosine kinase				
+Myc	MYC	Mali_lab_screen	human	myelocytomatosis oncogene				
+Prkdc	PRKDC	Mali_lab_screen	human	protein kinase, DNA activated, catalytic polypeptide				
+Brd4	BRD4	Mali_lab_screen	human	bromodomain containing 4				
+Trp52	TP53	TCGA_top50_mutated	human	tumor protein p53				
+Muc16	MUC16	TCGA_top50_mutated	human	mucin 16, cell surface associated				
+Csmd3	CSMD3	TCGA_top50_mutated	human	CUB and Sushi multiple domains 3				
+Lrp1b	LRP1B	TCGA_top50_mutated	human	LDL receptor related protein 1B				
+Kras	KRAS	TCGA_top50_mutated	human	KRAS proto-oncogene, GTPase				
+Pik3ca	PIK3CA	TCGA_top50_mutated	human	phosphatidylinositol-4,5-bisphosphate 3-kinase catalytic subunit alpha				
+Fat4	FAT4	TCGA_top50_mutated	human	FAT atypical cadherin 4				
+Fat3	FAT3	TCGA_top50_mutated	human	FAT atypical cadherin 3				
+Kmt2d	KMT2D	TCGA_top50_mutated	human	lysine methyltransferase 2D				
+Pten	PTEN	TCGA_top50_mutated	human	phosphatase and tensin homolog				
+Arid1a	ARID1A	TCGA_top50_mutated	human	AT-rich interaction domain 1A				
+Apc	APC	TCGA_top50_mutated	human	APC regulator of WNT signaling pathway				
+Fat1	FAT1	TCGA_top50_mutated	human	FAT atypical cadherin 1				
+Kmt2c	KMT2C	TCGA_top50_mutated	human	lysine methyltransferase 2C				
+Braf	BRAF	TCGA_top50_mutated	human	B-Raf proto-oncogene, serine/threonine kinase				
+Fam135b	FAM135B	TCGA_top50_mutated	human	family with sequence similarity 135 member B				
+Nf1	NF1	TCGA_top50_mutated	human	neurofibromin 1				
+Nras	NRAS	TCGA_top50_mutated	human	NRAS proto-oncogene, GTPase				
+Zfhx3	ZFHX3	TCGA_top50_mutated	human	zinc finger homeobox 3				
+Cntnap2	CNTNAP2	TCGA_top50_mutated	human	contactin associated protein 2				
+Atrx	ATRX	TCGA_top50_mutated	human	ATRX chromatin remodeler				
+Notch1	NOTCH1	TCGA_top50_mutated	human	notch receptor 1				
+Ptprt	PTPRT	TCGA_top50_mutated	human	protein tyrosine phosphatase receptor type T				
+Crebbp	CREBBP	TCGA_top50_mutated	human	CREB binding protein				
+Grin2a	GRIN2A	TCGA_top50_mutated	human	glutamate ionotropic receptor NMDA type subunit 2A				
+Ptprd	PTPRD	TCGA_top50_mutated	human	protein tyrosine phosphatase receptor type D				
+Atm	ATM	TCGA_top50_mutated	human	ATM serine/threonine kinase				
+Birc6	BIRC6	TCGA_top50_mutated	human	baculoviral IAP repeat containing 6				
+Rnf213	RNF213	TCGA_top50_mutated	human	ring finger protein 213				
+Trrap	TRRAP	TCGA_top50_mutated	human	transformation/transcription domain associated protein				
+Dcc	DCC	TCGA_top50_mutated	human	DCC netrin 1 receptor				
+Cdh10	CDH10	TCGA_top50_mutated	human	cadherin 10				
+Ank1	ANK1	TCGA_top50_mutated	human	ankyrin 1				
+Nbea	NBEA	TCGA_top50_mutated	human	neurobeachin				
+Prex2	PREX2	TCGA_top50_mutated	human	phosphatidylinositol-3,4,5-trisphosphate dependent Rac exchange factor 2				
+Kmt2a	KMT2A	TCGA_top50_mutated	human	lysine methyltransferase 2A				
+Ctnnd2	CTNND2	TCGA_top50_mutated	human	catenin delta 2				
+Erbb4	ERBB4	TCGA_top50_mutated	human	erb-b2 receptor tyrosine kinase 4				
+Ctnna2	CTNNA2	TCGA_top50_mutated	human	catenin alpha 2				
+Robo2	ROBO2	TCGA_top50_mutated	human	roundabout guidance receptor 2				
+Akap9	AKAP9	TCGA_top50_mutated	human	A-kinase anchoring protein 9				
+Egfr	EGFR	TCGA_top50_mutated	human	epidermal growth factor receptor				
+Fbxw7	FBXW7	TCGA_top50_mutated	human	F-box and WD repeat domain containing 7				
+Muc4	MUC4	TCGA_top50_mutated	human	mucin 4, cell surface associated				
+Setd2	SETD2	TCGA_top50_mutated	human	SET domain containing 2, histone lysine methyltransferase				
+	FAM47C	TCGA_top50_mutated	human	family with sequence similarity 47 member C	mouse version is not a true ortholog			
+Ptprb	PTPRB	TCGA_top50_mutated	human	protein tyrosine phosphatase receptor type B				
+Spen	SPEN	TCGA_top50_mutated	human	spen family transcriptional repressor				
+Ros1	ROS1	TCGA_top50_mutated	human	ROS proto-oncogene 1, receptor tyrosine kinase				
+Idh1	IDH1	TCGA_top50_mutated	human	isocitrate dehydrogenase (NADP(+)) 1				
+Stat2	STAT2	Yan_escape_from_anoikis_geneset	human	signal transducer and activator of transcription 2				
+Irf7	IRF7	Yan_escape_from_anoikis_geneset	human	interferon regulatory factor 7				
+Stat1	STAT1	Yan_escape_from_anoikis_geneset	human	signal transducer and activator of transcription 1				
+Cx3cl1	CX3CL1	Yan_escape_from_anoikis_geneset	human	C-X3-C motif chemokine ligand 1				
+Ccl20	CCL20	Yan_escape_from_anoikis_geneset	human	C-C motif chemokine ligand 20				
+Bcl211	BCL2L11	Yan_escape_from_anoikis_geneset	human	BCL2 like 11				
+Ccl5	CCL5	Yan_escape_from_anoikis_geneset	human	C-C motif chemokine ligand 5				
+Cfb	CFB	Yan_escape_from_anoikis_geneset	human	complement factor B				
+Aldh3a1	ALDH3A1	Yan_escape_from_anoikis_geneset	human	aldehyde dehydrogenase 3 family member A1				
+Lta	LTA	Yan_escape_from_anoikis_geneset	human	lymphotoxin alpha				
+Nfkb1	NFKB1	Yan_escape_from_anoikis_geneset	human	nuclear factor kappa B subunit 1				
+Eif2ak2	EIF2AK2	Yan_escape_from_anoikis_geneset	human	eukaryotic translation initiation factor 2-alpha kinase 2				
+Irf1	IRF1	Yan_escape_from_anoikis_geneset	human	interferon regulatory factor 1				
+Cd44	CD44	Yan_escape_from_anoikis_geneset	human	Cd44				
+Vcam1	VCAM1	Yan_escape_from_anoikis_geneset	human	vascular cell adhesion molecule 1				
+Nos2	NOS2	Yan_escape_from_anoikis_geneset	human	nitric acid synthase 2				
+	CXCL10	Yan_escape_from_anoikis_geneset	human	CXC motif chemokine ligand 10	mouse version is not a true ortholog			
+Ddit3	DDIT3	Yan_escape_from_anoikis_geneset	human	DNA damage inducible transcript 3				
+H2-Dma	HLA-DMA	Yan_escape_from_anoikis_geneset	human	major histocompatibility complex, class II, DM alpha				
+Mmp2	MMP2	Yan_escape_from_anoikis_geneset	human	matric metallopeptidase 2				
+Il15	IL15	Yan_escape_from_anoikis_geneset	human	interleukin 15				
+Mcx1	MX1	Yan_escape_from_anoikis_geneset	human	MX dynamin like GTPase				
+Rsad2	RSAD2	Yan_escape_from_anoikis_geneset	human	radical S-adenosyl methionine domain containing 2				
+Cd36	CD36	Cao_2023_geneset	human	Cd36				
+Ezh2	EZH2	Cao_2023_geneset	human	enhancer of zeste 2 polycomb repressive complex 2 subunit				
+Mmp11	MMP11	Cao_2023_geneset	human	matric metallopeptidase 11				
+Msln	MSLN	Cao_2023_geneset	human	mesothelin				
+Olfm3	OLFM3	Cao_2023_geneset	human	Olfactomedin 3				
+Pdk4	PDK4	Cao_2023_geneset	human	pyruvate dehydrogenase kinase 4				
+Serpine1	SERPINE1	Cao_2023_geneset	human	serpine family E member 1				
+Tfdp1	TFDP1	Cao_2023_geneset	human	transcription factor Dp-1				
+Traf2	TRAF2	Cao_2023_geneset	human	TNF receptor associated factor 2				
+Arap3	ARAP3	Modarres_2021_chemoresistance_up	human	ArfGAP with RhoGAP domain, ankyrin repeat and PH domain 3				
+Sort1	SORT1	Modarres_2021_chemoresistance_up	human	sortilin 1				
+Inpp4b	INPP4B	Modarres_2021_chemoresistance_up	human	inositol polyphosphate-4-phosphatase type II B				
+Acsm3	ACSM3	Modarres_2021_chemoresistance_up	human	acyl-CoA synthetase medium-chain family member 3				
+Padi4	PADI4	Modarres_2021_chemoresistance_up	human	peptidyl arginine deiminase, type IV				
+Dshs1	DCHS1	Modarres_2021_chemoresistance_up	human	dachsous cadherin-related 1				
+Apc6	ACP6	Modarres_2021_chemoresistance_up	human	acid phosphatase 6, lysophosphatidic				
+Macroh2a2	MACROH2A2	Modarres_2021_chemoresistance_up	human	macroH2A.2 histone				
+Peli2	PELI2	Modarres_2021_chemoresistance_up	human	pellino 2				
+Akt3	AKT3	Modarres_2021_chemoresistance_up	human	AKT serine theonine kinase/thymoma viral proto-oncogene 3				
+Alox5	ALOX5	Modarres_2021_chemoresistance_up	human	arachnidonate 5-lipoxygenase				
+Ica1	ICA1	Modarres_2021_chemoresistance_up	human	islet cell autoantigen 1				
+Gabbr1	GABBR1	Modarres_2021_chemoresistance_up	human	gamma-aminobutyric acid type B receptor subunit 1				
+Lmo4	LMO4	Modarres_2021_chemoresistance_up	human	LIM domain only 4				
+Spata6	SPATA6	Modarres_2021_chemoresistance_up	human	spermatogenesis associated 6				
+Ripor2	RIPOR2	Modarres_2021_chemoresistance_up	human	RHO family interacting cell polarization regulator 2				
+	GBP2	Modarres_2021_chemoresistance_up	human	guanylate binding protein 2	mouse version is not a true ortholog			
+Pxdc1	PXDC1	Modarres_2021_chemoresistance_down	human	PX domain containing 1				
+Insig1	INSIG1	Modarres_2021_chemoresistance_down	human	insulin induced gene 1				
+Nrip3	NRIP3	Modarres_2021_chemoresistance_down	human	nuclear receptor interacting protein 3				
+Galnt6	GALNT6	Modarres_2021_chemoresistance_down	human	polypeptide N-acetylgalactosaminyltransferase 6				
+Mreg	MREG	Modarres_2021_chemoresistance_down	human	melanoregulin				
+Lhfpl2	LHFPL2	Modarres_2021_chemoresistance_down	human	lipoma HMGIC fusion partner-like 2				
+Aff3	AFF3	Modarres_2021_chemoresistance_down	human	ALF transcription factor 3/ AF4/FMR2 family, member 3				
+Matk	MATK	Modarres_2021_chemoresistance_down	human	megakaryocyte-associated tyrosine kinase				
+Epas1	EPAS1	Modarres_2021_chemoresistance_down	human	endothelial PAS domain protein 1				
+Mgat4a	MGAT4A	Modarres_2021_chemoresistance_down	human	alpha-1,3-mannosyl-glycoprotein 4-beta-N-acetylglucosaminyltransferase A				
+Emp1	EMP1	Modarres_2021_chemoresistance_down	human	epithelial membrane protein 1				
+Rps6ka2	RPS6KA2	Modarres_2021_chemoresistance_down	human	ribosomal protein S6 kinase, polypeptide 2				
+S100b	S100B	Modarres_2021_chemoresistance_down	human	S100 calcium binding protein beta polypeptide				
+Serpinf1	SERPINF1	Modarres_2021_chemoresistance_down	human	serpine family F member 1				
+Tubb2a	TUBB2A	Modarres_2021_chemoresistance_down	human	tubulin beta 2A class Iia				
+Spp1	SPP1	Modarres_2021_chemoresistance_down	human	secreted phosphoprotein 1				
+Jun	JUN	Modarres_2021_chemoresistance_down	human	Jun proto-oncogene, AP-1 transcription factor subunit				
+Abcc1	ABCC1	Biocarta_MRP	mouse and human	ATP binding cassette subfamily C member 1				
+Abcb1b	ABCB1	Biocarta_MRP	mouse and human	ATP binding cassette subfamily B member 1/ ATP binding cassette subfamily B member 1B (mouse)				
+Abcb1a		Biocarta_MRP	mouse	ATP binding cassette subfamily B member 1A	no human ortholog			
+Abcb11	ABCB11	Biocarta_MRP	mouse and human	ATP binding cassette subfamily B member 11				
+Abcc3	ABCC3	Biocarta_MRP	mouse and human	ATP binding cassette subfamily C member 3				
+Gstp2		Biocarta_MRP	mouse	glutathione S-transferase, pi 2	no human ortholog			
+	ABCB4	Biocarta_MRP	human	ATP binding cassette subfamily B member 4	mouse version is not a true ortholog			
+	GSTP1	Biocarta_MRP	human	glutathione S-transferase, pi 1	mouse version is not a true ortholog			
+Cox6a2	COX6A2	Rachel_additions	mouse	cytochrome c oxidase subunit 6A2				
+Lhfpl3	LHFPL3	Rachel_additions	mouse	LHFPL tetraspan subfamily member 3/lipoma HMGIC fusion partner-like 3				
+Mcl1	MCL1	Rachel_additions	mouse	MCL1 apoptosis regulator, BCL2 family member/myeloid cell leukemia sequence 1				
+Zeb1	ZEB1	Rachel_additions	mouse	zinc finger E-box binding homeobox 1				
+Itgb1	ITGB1	Rachel_additions	mouse	integrin subunit beta 1 (fibronectin receptor beta)				
+Casp8	CASP8	Rachel_additions	mouse	caspase 8				
+Ptk2	PTK2	Rachel_additions	mouse	protein tyrosine kinase 2 (FAK)				
+Bax	BAX	Rachel_additions	mouse	BCL-associated X protein				
+Ilk	ILK	Rachel_additions	mouse	integrin linked kinase				
+Rac1	RAC1	Rachel_additions	mouse	Rac family small GTPase 1				
+Elane	ELANE	HL60_arac_up	human	elastase, neutrophil expressed				
+Nav3	NAV3	HL60_arac_up	human	neuron navigator 3				
+Clec11a	CLEC11A	HL60_arac_up	human	C-type lectin domain containing family 11 member A				
+Cfd	CFD	HL60_arac_up	human	complement factor D				
+Kcnd2	KCND2	HL60_arac_up	human	potassium voltage-gated channel, Shal-related family, member 2				
+Cpne8	CPNE8	HL60_arac_up	human	copine 8				
+	AL163541.1	HL60_arac_up	human		unannotated 			
+Inpp4b	INPP4B	HL60_arac_up	human	inositol polyphosphate-4-phosphatase type II B				
+	AL713998.1	HL60_arac_up	human		unannotated 			
+Mkx	MKX	HL60_arac_up	human	mohawk homeobox				
+Igf2bp2	IGF2BP2	HL60_arac_up	human	insulin like growth factor 2 mRNA binding protein 2				
+Camk2d	CAMK2D	HL60_arac_up	human	calcium/calmodulin-dependent protein kinase II, delta				
+Anxa2	ANXA2	HL60_arac_up	human	annexin A2				
+Prdx2	PRDX2	HL60_arac_up	human	peroxiredoxin 2				
+	CST3	HL60_arac_up	human	cystatin C	mouse version is not a true ortholog			
+Negr1	NEGR1	HL60_arac_up	human	neuronal growth regulator 1				
+Lamp5	LAMP5	HL60_arac_up	human	lysosomal associated membrane protein family, member 5				
+Ncam1	NCAM1	HL60_arac_up	human	neural cell adhesion molecule 1				
+	HLA-B	HL60_arac_up	human	major histocompatibility complex, class I, B	no mouse ortholog			
+Slc35f1	SLC35F1	HL60_arac_up	human	solute carrier family 35, member F1				
+Fcer1g	FCER1G	HL60_arac_up	human	Fc receptor, IgE, high affinity I, gamma polypeptide				
+Ppdpf	PPDPF	HL60_arac_up	human	pancreatic progenitor cell differentiation and proliferation factor				
+Irf8	IRF8	HL60_arac_up	human	interferon regulatory factor 8				
+Prickle1	PRICKLE1	HL60_arac_up	human	prickle planar cell polarity protein 1				
+Dtna	DTNA	HL60_arac_up	human	dystrobrevin alpha				
+Zfp438	ZNF438	HL60_arac_up	human	zinc finer protein 438				
+Mef2c	MEF2C	HL60_arac_up	human	monocyte enhancer factor 2c				
+Akt3	AKT3	HL60_arac_up	human	AKT serine theonine kinase/thymoma viral proto-oncogene 3				
+Sdk1	SDK1	HL60_arac_up	human	sidekick cell adhesion molecule 1				
+A100a10	S100A10	HL60_arac_up	human	S100 calcium binding protein A10				
+Sgcz	SGCZ	HL60_arac_up	human	sarcoglycan zeta				
+Pld3	PLD3	HL60_arac_up	human	phospholipase D family member 3				
+Thsd7a	THSD7A	HL60_arac_up	human	thrombospondin, type I, domain containing 7A				
+Cd36	CD36	HL60_arac_up	human	Cd36				
+Mef2d	MEF2D	HL60_arac_up	human	monocyte enhancer factor 2d				
+Vim	VIM	HL60_arac_up	human	vimentin				
+Cplane1	CPLANE1	HL60_arac_up	human	ciliogenesis and planar polarity effector 1				
+Bex3	BEX3	HL60_arac_up	human	brain expressed X-linked 3				
+Mrc2	MRC2	HL60_arac_up	human	mannose receptor, C type 2				
+Hnmt	HNMT	HL60_arac_up	human	histamine N-methyltransferase				
+Lgals1	LGALS1	HL60_arac_up	human	galectin 1				
+Bex2	BEX1	HL60_arac_up	human	brain expressed X-linked 1				
+Sfmbt2	SFMBT2	HL60_arac_up	human	Scm like with four mbt domains 2				
+Ptprn2	PTPRN2	HL60_arac_up	human	protein tyrosine phosphatase receptor type N polypeptide 2				
+Foxp2	FOXP2	HL60_arac_up	human	forkhead box P2				
+Phactr3	PHACTR3	HL60_arac_up	human	phosphatase and actin regulator 3				
+Hook3	HOOK3	HL60_arac_up	human	hook microtubule tethering protein 3				
+Slc8a1	SLC8A1	HL60_arac_up	human	solute carrier family 8 (sodium/calcium exchanger), member 1				
+	LYZ	HL60_arac_up	human	lysozyme	no mouse ortholog			
+Pde4d	PDE4D	HL60_arac_up	human	phosphodiesterase 4D, cAMP specific				
+Dach1	DACH1	HL60_arac_down	human	dachshund family transcription factor 1				
+App	APP	HL60_arac_down	human	amyloid beta precursor protein				
+Ccnd2	CCND2	HL60_arac_down	human	cyclin D2				
+Slc38a1	SLC38A1	HL60_arac_down	human	solute carrier family 38, member 1				
+Mpo	MPO	HL60_arac_down	human	myeloperoxidase				
+Prg2	PRG2	HL60_arac_down	human	proteoglycan 2, bone marrow				
+Ncald	NCALD	HL60_arac_down	human	neurocalcin delta				
+Aff2	AFF2	HL60_arac_down	human	ALF transcription elongation factor 2/AF4/FMR2 family, member 2				
+Ebp	EBP	HL60_arac_down	human	EBP cholestenol delta-isomerase				
+Cebpe	CEBPE	HL60_arac_down	human	CCAAT/enhancer binding protein epsilon				
+	TUBA4A	HL60_arac_down	human	tubulin alpha 4a	mouse version is not a true ortholog			
+	AC008568.1	HL60_arac_down	human		unannotated 			
+Armh1	ARMH1	HL60_arac_down	human	armadillo-like helical domain containing 1				
+Msrb3	MSRB3	HL60_arac_down	human	methionine sulfoxide reductase B3				
+Fhit	FHIT	HL60_arac_down	human	fragile histidine triad gene				
+Cst7	CST7	HL60_arac_down	human	cystatin F (leukostatin)				
+Lin7a	LIN7A	HL60_arac_down	human	lin-7 homolog A, crumbs cell polarity complex component				
+	CASC11	HL60_arac_down	human	cancer susceptibility gene 11	no mouse ortholog			
+	OVAAL	HL60_arac_down	human	ovarian adenocarcinoma amplified long non-coding RNA	non protein coding			
+Nfia	NFIA	HL60_arac_down	human	nuclear factor I/A				
+Sptbn1	SPTBN1	HL60_arac_down	human	spectrin beta, non-erythrocytic 1				
+	CD59	HL60_arac_down	human	Cd59	no mouse ortholog			
+Ift57	IFT57	HL60_arac_down	human	intraflagellar transport 57				
+Cd96	CD96	HL60_arac_down	human	Cd96				
+Gm40318	S100P	HL60_arac_down	human	S100 calcium binding protein P	mouse ortholog is predicted			
+Tnfaip8	TNFAIP8	HL60_arac_down	human	TNF alpha-induced protein factor 8				
+Elmo1	ELMO1	HL60_arac_down	human	elngulfment and cell motility 1				
+Sycp2l	SYCP2L	HL60_arac_down	human	synaptonemal complex protein 2-like				
+Igfr1	IGF1R	HL60_arac_down	human	insulin like growth factor I receptor				
+Slc27a2	SLC27A2	HL60_arac_down	human	solute carrier family 27 (fatty acid transporter), member 2				
+Igf2bp1	IGF2BP1	HL60_arac_down	human	insulin like growth factor 2 mRNA binding protein 1				
+Frmd4b	FRMD4B	HL60_arac_down	human	FERM domain containing 4B				
+Hsh2d	HSH2D	HL60_arac_down	human	hematopoietic SH2 domain containing				
+Creb5	CREB5	HL60_arac_down	human	cAMP responsive element binding protein 5				
+	CEACAM6	HL60_arac_down	human	CEA cell adhesion molecule 6	no mouse ortholog			
+Anpep	ANPEP	HL60_arac_down	human	alanyl aminopeptidase, membrane				
+Rnf25	RNF24	HL60_arac_down	human	zinc ring finger protein 24				
+Itpr2	ITPR2	HL60_arac_down	human	inositol 1,4,5-triphosphate receptor 2				
+Grp160	GPR160	HL60_arac_down	human	G protein-coupled receptor 160				
+Aig1	AIG1	HL60_arac_down	human	androgen induced 1				
+Galnt14	GALNT14	HL60_arac_down	human	polypeptide N-acetylgalactosaminyltransferase 14				
+Stxbp5	STXBP5	HL60_arac_down	human	syntaxin binding protein 5				
+Hgf	HGF	HL60_arac_down	human	hepatocyte growth factor				
+Antxr2	ANTXR2	HL60_arac_down	human	ANTXR cell adhesion molecule 2/anthrax toxin receptor 2				
+Esd	ESD	HL60_arac_down	human	esterase D/formylglutathione hydrolase				
+	DUXAP8	HL60_arac_down	human	double homeobox A pseudogene 8	non protein coding			
+Msi2	MSI2	HL60_arac_down	human	musashi RNA-binding protein 2				
+Taf4b	TAF4B	HL60_arac_down	human	TATA-box binding protein associated factor 4b				
+Rab8a	RAB8A	HL60_arac_down	human	member RAS oncogene family				
+Zeb1	ZEB1	HL60_arac_down	human	zinc finger E-box binding homeobox 1				
