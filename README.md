@@ -17,6 +17,7 @@
     - [lineage_recorder_editing_plots.R](R_scripts/lineage_recorder_editing_plots.R): plotting FLARE barcode editing
     - [single_cell_GEX_initial_processing.R](R_scripts/single_cell_GEX_initial_processing.R): initial scRNA-seq analysis post CellRanger
     - [single_cell_lineage_analysis.R](R_scripts/single_cell_lineage_analysis.R): integration and downstream analysis of single cell lineage and transciptomics
+    - [PATH_analysis.R](R_scripts/PATH_analysis.R): state transitions and auto/crosscorrelation using PATH
     - [mouse_blooddraw_lineage.R](R_scripts/mouse_blooddraw_lineage.R): analysis of FLARE bulk sequencing data from longitudinal blood samples
     - [module_overlap_analysis.R](R_scripts/module_overlap_analysis.R): computing Hotspot gene module overlaps
     - [survival_analysis_TARGET.R](R_scripts/survival_analysis_TARGET.R): survival analysis using the TARGET AML patient cohort
@@ -44,5 +45,6 @@
 1. Generate initial Seurat objects with [single_cell_GEX_initial_processing.R](R_scripts/single_cell_GEX_initial_processing.R)
 2. Add founder and clone assignments to cells with [single_cell_lineage_analysis.R](R_scripts/single_cell_lineage_analysis.R)
 3. Downstream analysis (GSEA, PATH, Hotspot gene modules, etc.)     
-   - PATH, state transitions, GSEA analysis in [single_cell_lineage_analysis.R](R_scripts/single_cell_lineage_analysis.R)
+   - PATH, state transitions in [PATH_analysis.R](R_scripts/PATH_analysis.R)
+   - GSEA analysis in [single_cell_lineage_analysis.R](R_scripts/single_cell_lineage_analysis.R)
    - HotSpot Modules [4_HotSpotModules.py](python_scripts/4_HotSpotModules.py)
