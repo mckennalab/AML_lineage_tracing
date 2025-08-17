@@ -1,0 +1,253 @@
+library(ape)
+library(PATH)
+library(expm)
+library(tidytree)
+library(Matrix)
+library(patchwork)
+library(parallel)
+library(msigdbr)
+library(magrittr)
+library(tidyverse)
+library(fgsea)
+library(ComplexHeatmap)
+
+rosetta <- read.table("/dartfs/rc/lab/M/McKennaLab/resources/cellranger_versions/cellranger-7.2.0/lib/python/cellranger/barcodes/translation/3M-february-2018.txt.gz") #use updated whitelist for GEM-X 10x runs
+#founder 1 tree
+mega_tree <- ape::read.tree("/dartfs/rc/lab/M/McKennaLab/projects/hannah/aml/analysis/c1498_lineage_NEW/rs22_rs28/trees_res1/F1_newick/rs22_rs28_F1_Vanilla_rmWT_megatree.newick")
+#founder 6 tree
+mega_tree_6 <- ape::read.tree("/dartfs/rc/lab/M/McKennaLab/projects/hannah/aml/analysis/c1498_lineage_NEW/rs22_rs28/trees_res1/F6_newick/rs22_rs28_F6_Vanilla_rmWT_megatree.newick")
+
+
+##### State transitions + permutation analysis #####
+new_md <- FetchData(f1, vars=c("clust_region", "clust_region_fine"), layer='data') # fetch data 
+new_md$bc_stripped <- gsub('_\\d', '', rownames(new_md)) #remove any numbers etc. from the cellID
+new_md$rows <- rownames(new_md)
+new_md <- merge(new_md, rosetta, by.x='bc_stripped', by.y = 'V1') # merge with whitelist 
+new_md$exp <- "rs22"
+new_md$lin_cellID <- paste0(new_md$exp, '_' , new_md$V2) # this specific dataset has a prefix, so add the experimental prefix (i.e. rs22_barcodestring) 
+rownames(new_md) <- new_md$lin_cellID
+
+# prune the tree to only include leaves of interest (control cells only for fig. S5A)
+f1.1_todrop <- f1.1_tree$tip.label[f1.1_tree$tip.label %nin% rownames(new_md)]
+ctrl_f1.1_tree <- ape::drop.tip(f1.1_tree, f1.1_todrop)
+
+transition_matrix <- function(tree, metadata){ #prepping tree and running path_inf
+  tree_md <- tree
+  clust_region <- metadata[tree_md$tip.label, ]$clust_region
+  tree_md$clust_region <- clust_region
+  tree_md$edge.length <- rep(1, length(tree_md$edge))
+  Pinf <- PATH_inf(tree = tree_md, cell_states = "clust_region", impute_branches = TRUE, sample_rate_est = 10^-6)
+  return(Pinf$Pt)
+}
+
+perm_tree_test <- function(tree, metadata, nperm){
+  true_transitions <- transition_matrix(tree, metadata) #get actual transition matrix
+  list_set <- list(true_transitions)
+  
+  for(i in 1:nperm){
+    tree_random <- tree
+    tree_random$tip.label <- sample(tree_random$tip.label)
+    list_set[[i+1]] <- transition_matrix(tree_random, metadata)
+  }
+  return(list_set)
+}
+
+perm_list <- perm_tree_test(f1.2_tree, new_md, 1000)
+
+# prepping results for plotting
+perm_df <- data.frame(matrix(ncol=16,nrow=1, dimnames=list(NA, c("adprh2adprh", "adprh2ctrl", "adprh2persist", "adprh2resist", "ctrl2adprh", "ctrl2ctrl", "ctrl2persist", "ctrl2resist", "persist2adprh", "persist2ctrl", "persist2persist", "persist2resist", "resist2adprh", "resist2ctrl", "resist2persist", "resist2resist"))))
+for(perm in 1:length(perm_list)){
+  temp_row <- c()
+  mt <- perm_list[[perm]]
+  for(i in 1:nrow(mt)){
+    for(j in 1:ncol(mt)){
+      val <- mt[i,j]
+      temp_row <- c(temp_row, val)
+    }
+  }
+  if (sum(is.na(temp_row)) == 0) {
+    perm_df <- rbind(perm_df, temp_row)
+  }
+}
+perm_df <- perm_df[-1,] %>% rownames_to_column() # get rid of extra row with NAs
+perm_df <- perm_df[1:7501,] # isolate just the first 7500 permutations
+
+perm_df_longer <- perm_df %>% pivot_longer(!rowname, names_to = "transition", values_to = "prob")
+
+# for plotting
+perm_df_boxplot <- perm_df_longer[perm_df_longer$rowname != 2, ] # isolate permutations
+perm_df_true <- perm_df_longer[perm_df_longer$rowname == 2, ] #isolate true transition probabilities
+
+# get p vals
+perm_df_test <- perm_df[-1,] # remove true transitions
+
+pvals <- c()
+for (i in 2:17){
+  test_mean <- mean(perm_df_test[,i]) # find permutation mean
+  test_diff <- abs(test_mean - perm_df[1, i]) # calculate difference between permutation mean and true transition prob
+  pval <- (sum(perm_df_test[,i] >= (test_mean + test_diff) | perm_df_test[,i] <= (test_mean - test_diff)))/length(perm_df_test[,i]) # calculate p vals
+  pvals <- c(pvals, pval)
+}
+
+pval_df <- data.frame(matrix(unique(perm_df_boxplot$transition), nrow=length(unique(perm_df_boxplot$transition)), byrow=TRUE))
+pval_df$pval <- pvals
+pval_df$pvals_adj <- p.adjust(pval_df$pval, method = "fdr", n = length(pval_df$pval))
+names(pval_df) <- c("transition", "pval", "pval_adj")
+# need to add group1 and group2 for stat_pvalue_manual to be happy
+pval_df$group1 <- 1
+pval_df$group2 <- 1
+
+pval_df <- add_significance(pval_df, "pval_adj", "sig_level")
+pval_df <- pval_df %>%
+    filter(sig_level != "ns")
+
+#plot the spread of tree permutations, true transitions in red
+ggplot(perm_df_boxplot, aes(x=transition, y=prob)) + 
+  geom_boxplot(outlier.size = 0.5, outlier.alpha = 0.5) + 
+  ggplot2::geom_point(perm_df_true, mapping = aes(x=transition, y=prob), color = "red", size = 4) +
+  theme_cowplot() +
+  stat_pvalue_manual(
+  pval_df, x = "transition", y.position = 1.05,
+  label = "sig_level", size = 8) 
+
+
+##### auto and crosscorrelation PATH analysis #####
+DefaultAssay(rs22_rs28_combo_joined) <- "RNA"
+var_features <- (Loadings(object = rs22_rs28_combo_joined[["pca"]])[, 1:20])
+rs22_new_md <- FetchData(rs22_rs28_combo_joined, vars=c("integrated_snn_res.0.2", "group", rownames(var_features)[1:3000]), layer='data') # fetch data 
+rs22_new_md$bc_stripped <- gsub('_\\d', '', rownames(rs22_new_md)) # remove any numbers etc. from the cellID
+rs22_new_md$rows <- rownames(rs22_new_md)
+rs22_new_md <- merge(rs22_new_md, rosetta, by.x='bc_stripped', by.y = 'V1') # merge with whitelist 
+rs22_new_md$exp <- rs22_rs28_combo_joined@meta.data[rs22_new_md$rows, ]$exp
+rs22_new_md$lin_cellID <- paste0(rs22_new_md$exp, '_' , rs22_new_md$V2) # add the experimental prefix (i.e. rs22_barcodestring) if applicable
+rownames(rs22_new_md) <- rs22_new_md$lin_cellID # assign barcodes that are compatible with tree labels to row names 
+
+# function to get autocorrelation df
+path_autocorr <- function(tree, metadata){ #prepping tree and running path_inf
+  X <-  apply(metadata[tree$tip.label, -1], 2, as.numeric)
+  X <- as(X, 'sparseMatrix')
+  X <- cbind(PATH::catMat(metadata[tree$tip.label, ]$group), X)
+  Winv <- inv_tree_dist(tree, node = TRUE, norm = FALSE)
+  modxcor <- xcor(X, Winv)
+  Idf <- reshape2::melt(modxcor$phy_cor, 
+                      value.name = "I")
+  Zdf <- reshape2::melt(modxcor$Z.score, 
+                      value.name = "Z")
+  Pdf <- reshape2::melt(modxcor$one.sided.pvalue, value.name='p.val')
+  Zp_df <- full_join(Zdf, Pdf, by=c('Var1', 'Var2'))
+  df <- full_join(Idf, Zp_df, by=c("Var1", "Var2"))
+  df <- df %>% mutate(Var1 = as.factor(Var1), 
+                      Var2 = as.factor(Var2))
+  df$adj_p.val <-p.adjust(df$p.val, method="BH")
+  auto_df <- df %>%
+    filter(Var1 == Var2) %>%
+    filter(adj_p.val < 0.05)
+  auto_df <- auto_df[, -1]
+
+  return(auto_df)
+}
+
+# does the same thing as the function, for when you'd rather do it step by step or want the cross correlations
+X1 <-  apply(rs22_new_md[mega_tree$tip.label, 4:3003], 2, as.numeric)
+X1 <- as(X1, 'sparseMatrix')
+X1 <- cbind(PATH::catMat(rs22_new_md[mega_tree$tip.label, ]$group), X1) 
+Winv1 <- inv_tree_dist(mega_tree, node = TRUE, norm = FALSE)
+modxcor1 <- xcor(X1, Winv1)
+Idf1 <- reshape2::melt(modxcor1$phy_cor, 
+                       value.name = "I")
+Zdf1 <- reshape2::melt(modxcor1$Z.score, 
+                       value.name = "Z")
+Pdf1 <- reshape2::melt(modxcor1$one.sided.pvalue, value.name='p.val')
+Zp_df1 <- full_join(Zdf1, Pdf1, by=c('Var1', 'Var2'))
+df1 <- full_join(Idf1, Zp_df1, by=c("Var1", "Var2"))
+df1 <- df1 %>% mutate(Var1 = as.factor(Var1), 
+                      Var2 = as.factor(Var2))
+df1$adj_p.val <-p.adjust(df1$p.val, method="BH")
+
+auto_df1 <- df1 %>%
+  filter(Var1 == Var2) %>%
+  filter(adj_p.val < 0.05)
+auto_df1 <- auto_df1[, -1]
+
+# filter genes, get the top z scores
+auto_df1 <- auto_df1[-grep("Rpl", auto_df1$Var2), ]
+auto_df1 <- auto_df1[-grep("Rps", auto_df1$Var2), ]
+auto_df1 <- auto_df1[-grep("mt-", auto_df1$Var2), ]
+auto_df1 <- auto_df1 %>% arrange(desc(Z))
+f1_genes <- auto_df1$Var2[1:15] #for the main figure
+
+
+X6 <-  apply(rs22_new_md[mega_tree_6$tip.label, 4:3003], 2, as.numeric)
+X6 <- as(X6, 'sparseMatrix') 
+X6 <- cbind(PATH::catMat(rs22_new_md[mega_tree_6$tip.label, ]$group), X6) 
+Winv6 <- inv_tree_dist(mega_tree_6, node = TRUE, norm = FALSE)
+modxcor6 <- xcor(X6, Winv6)
+Idf6 <- reshape2::melt(modxcor6$phy_cor, 
+                       value.name = "I")
+Zdf6 <- reshape2::melt(modxcor6$Z.score, 
+                       value.name = "Z")
+Pdf6 <- reshape2::melt(modxcor6$one.sided.pvalue, value.name='p.val')
+Zp_df6 <- full_join(Zdf6, Pdf6, by=c('Var1', 'Var2'))
+df6 <- full_join(Idf6, Zp_df6, by=c("Var1", "Var2"))
+df6 <- df6 %>% mutate(Var1 = as.factor(Var1), 
+                      Var2 = as.factor(Var2))
+df6$adj_p.val <-p.adjust(df6$p.val, method="BH")
+
+auto_df6 <- df6 %>%
+  filter(Var1 == Var2) %>%
+  filter(adj_p.val < 0.05)
+auto_df6 <- auto_df6[, -1]
+
+# filter genes, get the top z scores
+auto_df6 <- auto_df6[-grep("Rpl", auto_df6$Var2), ]
+auto_df6 <- auto_df6[-grep("Rps", auto_df6$Var2), ]
+auto_df6 <- auto_df6[-grep("mt-", auto_df6$Var2), ]
+auto_df6 <- auto_df6 %>% arrange(desc(Z))
+f6_genes <- auto_df6$Var2[1:15]
+
+# make joined gene list, get rid of duplicates
+gene_list <- c(f1_genes, f6_genes)
+# set order if applicable
+gene_list_order <- c("Control", "Persistent", "Resistant", "Mouse", "Adprh", "Mctp1", "Itsn1", "Cd7", "Slc9a9", "Vim", "Lpcat2", "Gng5", "Grap2", "Olfm3", "Sugct", "Rapsn", "Hba-a1", "Fcer1g", "Npm1", "Kcnk13", "Cpa3", "Ybx1", "Eef1a1", "Eif4a1", "Gm10076", "Hsp90aa1", "Scd2", "Malat1")
+
+f1_gene_df <- df1[df1$Var1 %in% gene_list_order, ]
+f1_gene_df <- f1_gene_df %>% filter(Var1 == Var2)
+f1_gene_df$founder <- "F1"
+
+f6_gene_df <- df6[df6$Var1 %in% gene_list_order, ]
+f6_gene_df <- f6_gene_df %>% filter(Var1 == Var2)
+f6_gene_df$founder <- "F6"
+
+big_df <- rbind(f1_gene_df, f6_gene_df)
+extra_row <- c("Mouse", "Mouse", 0.00, 0.00, 0.00, 0.00, "F1")
+big_df <- rbind(big_df, extra_row)
+big_df$I <- as.numeric(big_df$I)
+big_df$Z <- as.numeric(big_df$Z)
+
+# Phylogenetic auto-correlation bar plot (figure 2h)
+maxz <- max(abs(big_df$Z))
+big_df %>%
+  ggplot(aes(x = factor(Var1, levels = gene_list_order), y = Z, fill = founder)) +
+  geom_bar(stat="identity", position = "dodge", width = 0.5) +  
+  labs(fill="Gene") +
+  ylab("Phylogenetic auto-correlation\n(z score)") + 
+  xlab("Gene") +
+  geom_hline(yintercept = qnorm(0.05, lower.tail = F), 
+             col="black", lty=2, linewidth=1) +
+  ggtitle("Variable feature heritability", 
+          subtitle = "z score") + 
+  scale_fill_manual(values = c("#bee0b4", "#72a645")) +
+  theme_cowplot() +
+  theme(axis.text.x = element_text(angle = 45, hjust=1, size = 12), legend.position = "none") +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, maxz))
+
+
+# cross correlation heatmap
+res_mat <- modxcor$Z.score
+res_mat[is.na(res_mat)] <- 0 
+Heatmap(res_mat, 
+        #show_row_name=FALSE,
+        #right_annotation = ha,
+        row_names_side = "left", 
+        #row_names_gp = gpar(fontsize = 4), 
+        name='Phylogenetic Correlation Z-score')
