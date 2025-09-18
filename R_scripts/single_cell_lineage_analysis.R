@@ -2,13 +2,10 @@
 
 ##### packages #####
 library(ggplot2)
-library(devtools)
-library(ShortRead) 
 library(data.table)
 library(Seurat)
 library(dplyr)
 library(stringr)
-library(BiocManager)
 library(radiant.data)
 library(ggnewscale)
 library(grid)
@@ -54,8 +51,8 @@ names(founder_splits) <- "group"
 founder_splits$founder <- strict_founder_cells$founder
 prop_df <- founder_splits %>% count(group, founder)
 prop_df <- prop_df[!(is.na(prop_df$founder)), ]
-extra_row <- c("Resistant", 11, 0)
-extra_row1 <- c("Persistent", 11, 0)
+extra_row <- c("Resistant", 11, 0) #placeholder for f11
+extra_row1 <- c("Persistent", 11, 0) #placeholder for f11
 prop_df <- rbind(prop_df, extra_row, extra_row1)
 prop_df$founder <- as.factor(prop_df$founder)
 prop_df$n <- as.numeric(prop_df$n)
