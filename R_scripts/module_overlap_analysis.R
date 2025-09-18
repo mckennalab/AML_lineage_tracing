@@ -7,24 +7,13 @@ library(ComplexHeatmap)
 hl60_mods <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/illumina/RS30_RS31_humancellEP/GEX/hotspot/hl60_megamega_modlist.csv")
 
 # splitting modules, cleaning up the data (depends on module csv format)
-mega_mod1 <- c(hl60_mods$Module.1)
-mega_mod2 <- c(hl60_mods$Module.2)
-mega_mod3 <- c(hl60_mods$Module.3)
-mega_mod4 <- c(hl60_mods$Module.4)
-mega_mod5 <- c(hl60_mods$Module.5)
-mega_mod6 <- c(hl60_mods$Module.6)
-mega_mod7 <- c(hl60_mods$Module.7)
-mega_mod8 <- c(hl60_mods$Module.8)
-mega_mod9 <- c(hl60_mods$Module.9)
-mega_mod10 <- c(hl60_mods$Module.10)
-mega_mod11 <- c(hl60_mods$Module.11)
-mega_mod12 <- c(hl60_mods$Module.12)
-mega_mod13 <- c(hl60_mods$Module.13)
-mega_mod14 <- c(hl60_mods$Module.14)
-mega_mod15 <- c(hl60_mods$Module.15)
-mega_mod16 <- c(hl60_mods$Module.16)
-mega_mod17 <- c(hl60_mods$Module.17)
-mega_mod18 <- c(hl60_mods$Module.18)
+mega_mod1 <- hl60_mods$Module.1[hl60_mods$Module.1 != ""]
+mega_mod2 <- hl60_mods$Module.2[hl60_mods$Module.2 != ""]
+mega_mod3 <- hl60_mods$Module.3[hl60_mods$Module.3 != ""]
+mega_mod4 <- hl60_mods$Module.4[hl60_mods$Module.4 != ""]
+mega_mod5 <- hl60_mods$Module.5[hl60_mods$Module.5 != ""]
+# repeat for all modules of interest
+
 
 # load C1498 modules
 c1498_mods <- read.csv("/dartfs/rc/lab/M/McKennaLab/projects/hannah/aml/analysis/c1498_lineage_NEW/rs22_rs28/trees_res1/HotSpot/241113_rs22_rs28_combo_joined_rm_MT-RB/24114_rs22_rs28_combo_joined_rm_MT_RB_hotspot_modules_annotated.csv")
@@ -46,13 +35,9 @@ make_hs_list = function(df) {
 }
 f1m1 <- make_hs_list(as.data.frame(f1_mega_mods$Gene[f1_mega_mods$Module == 1]))
 f1m2 <- make_hs_list(as.data.frame(f1_mega_mods$Gene[f1_mega_mods$Module == 2]))
-f1m3 <- make_hs_list(as.data.frame(f1_mega_mods$Gene[f1_mega_mods$Module == 3]))
-f1m4 <- make_hs_list(as.data.frame(f1_mega_mods$Gene[f1_mega_mods$Module == 4]))
 f6m1 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 1]))
 f6m2 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 2]))
-f6m3 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 3]))
-f6m4 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 4]))
-f6m5 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 5]))
+# repeat for all modules of interest
 
 ##### upsetR plot #####
 mods <- list(c1498_persistence = f1m1, c1498_in_vivo = f6m1, hl60_resistance = mega_mod2)
@@ -76,7 +61,8 @@ drawHeatmap(gom.obj, what = "Jaccard", adj.p = TRUE, grid.col="Blues", note.col=
 
 
 ##### expression correlation between modules and EMT and cell cycle gene sets #####
-DefaultAssay(strict_founder_cells) <- "RNA"
+# set seurat objects to RNA assay (only relevant for objects integrated with SCtransform)
+DefaultAssay(strict_founder_cells) <- "RNA" 
 DefaultAssay(hl60s_no_mid) <- "RNA"
 
 
