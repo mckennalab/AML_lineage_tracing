@@ -30,11 +30,7 @@ mega_mod2 <- hl60_mods$Module.2[hl60_mods$Module.2 != ""]
 mega_mod3 <- hl60_mods$Module.3[hl60_mods$Module.3 != ""]
 mega_mod4 <- hl60_mods$Module.4[hl60_mods$Module.4 != ""]
 mega_mod5 <- hl60_mods$Module.5[hl60_mods$Module.5 != ""]
-mega_mod6 <- hl60_mods$Module.6[hl60_mods$Module.6 != ""]
-mega_mod7 <- hl60_mods$Module.7[hl60_mods$Module.7 != ""]
-mega_mod8 <- hl60_mods$Module.8[hl60_mods$Module.8 != ""]
-mega_mod9 <- hl60_mods$Module.9[hl60_mods$Module.9 != ""]
-mega_mod10 <- hl60_mods$Module.10[hl60_mods$Module.10 != ""]
+# repeat for all modules of interest
 
 
 # load C1498 modules and convert to human gene orthologs
@@ -57,13 +53,9 @@ make_hs_list = function(df) {
 
 f1m1 <- make_hs_list(as.data.frame(f1_mega_mods$Gene[f1_mega_mods$Module == 1]))
 f1m2 <- make_hs_list(as.data.frame(f1_mega_mods$Gene[f1_mega_mods$Module == 2]))
-f1m3 <- make_hs_list(as.data.frame(f1_mega_mods$Gene[f1_mega_mods$Module == 3]))
-f1m4 <- make_hs_list(as.data.frame(f1_mega_mods$Gene[f1_mega_mods$Module == 4]))
 f6m1 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 1]))
 f6m2 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 2]))
-f6m3 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 3]))
-f6m4 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 4]))
-f6m5 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 5]))
+# repeat for all modules of interest
 
 # load pre-resistant signature genes
 pre_resist_sig <- c("CLSTN2", "SPATA6", "SGCZ", "PRICKLE1", "IGF2BP2", "CAMK2D", "MEIS1", "KCND2", "MKX", "BMP2", "TRHDE", "APBA2", "PPFIA2", "CPNE8", "PON2", "LAMP5", "LNCAROD", "CPLANE1", "HOXB-AS3", "NAV3", "SDK1", "IRF8", "CES1", "PTPRN2", "HIST1H1D", "NCAM1", "LHX2", "SASH1", "AK1", "ELANE", "PPDPF", "UNCX", "CFD", "AC107223.1", "EXT1", "BEX3", "CLEC11A", "LINC02169", "TNS3", "TTC28", "KLHL29", "CKAP4", "AL163541.1", "PRDX2", "BEX1", "MAP1LC3A", "HOXA9", "PSD3", "AC090796.1", "SERPINB6", "WDR49", "ANXA2", "CD36", "MEF2C", "SLC35F1", "HNMT", "AL713998.1", "MRAS", "DAPK1", "DTNA", "ACAA2", "HLA-B", "MGMT", "ASGR2", "STARD13")
