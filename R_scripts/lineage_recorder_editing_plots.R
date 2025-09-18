@@ -43,8 +43,8 @@ d44_sites <- d44_sites %>%  mutate(edit_count = rowSums(.[1:8] != "NONE"))
 d64_c1_sites <- d64_c1_sites %>%  mutate(edit_count = rowSums(.[1:8] != "NONE"))
 d87_c2_sites <- d87_c2_sites %>%  mutate(edit_count = rowSums(.[1:8] != "NONE"))
 
-# get it all into 1 df for plotting (certainly not the best method)
-sample <- c(replicate(133088, 0), replicate(85711, 13), replicate(1170303, 44), replicate(210253, 64), replicate(1738606, 87))
+# get it all into 1 df for plotting
+sample <- c(replicate(nrow(cntrl_sites), 0), replicate(nrow(d13_sites), 13), replicate(nrow(d44_sites), 44), replicate(nrow(d64_c1_sites), 64), replicate(nrow(d87_c2_sites), 87))
 prop_df <- as.data.frame(sample)
 prop_df$count <- c(cntrl_sites$edit_count, d13_sites$edit_count, d44_sites$edit_count, d64_c1_sites$edit_count, d87_c2_sites$edit_count)
 
@@ -74,7 +74,7 @@ clone_ids <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/other/
 clone_ids <- clone_ids[clone_ids$clone %in% c(1,6), ] #just interested in F1 and F6
 d87_p_c2 <- d87_p_c2[d87_p_c2$ftag %in% clone_ids$ID, ] 
 
-# determine if edits are unique to one target or span multiple targets
+# determine if edits are unique to one target or span multiple targets, certainly not the fasted method 
 edit_types <- as.data.frame(d87_p_c2$readName)
 edit_types <- edit_types %>% 
   mutate(t1 = ifelse(d87_p_c2$target1 == "NONE", "unedited", ifelse(d87_p_c2$target1 == d87_p_c2$target2, "multi", "single"))) %>% 
@@ -87,7 +87,7 @@ edit_types <- edit_types %>%
   mutate(t8 = ifelse(d87_p_c2$target8 == "NONE", "unedited", ifelse(d87_p_c2$target8 == d87_p_c2$target7, "multi", "single")))
 
 plot_df <- rbind(as.data.frame(table(edit_types$t1)), as.data.frame(table(edit_types$t2)), as.data.frame(table(edit_types$t3)), as.data.frame(table(edit_types$t4)), as.data.frame(table(edit_types$t5)), as.data.frame(table(edit_types$t6)), as.data.frame(table(edit_types$t7)), as.data.frame(table(edit_types$t8)))
-plot_df$target <- c(replicate(3, 1), replicate(3, 2), replicate(3, 3), replicate(3, 4), replicate(3, 5), replicate(3, 6), replicate(3, 7), replicate(3, 8))
+plot_df$target <- rep(1:8, each = 3)
 
 ggplot(plot_df, aes(fill = factor(Var1, levels=c("unedited", "single", "multi")), y = Freq, x = target)) + 
   geom_bar(position="fill", stat="identity") +
