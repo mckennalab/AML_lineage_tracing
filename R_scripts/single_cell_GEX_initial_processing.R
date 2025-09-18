@@ -9,6 +9,12 @@ library(radiant.data)
 library(grid)
 library(scCustomize)
 library(forcats)
+library(SingleR)
+library(celldex)
+library(SingleCellExperiment)
+library(dbplyr)
+library(irlba)
+library(scDblFinder)
 `%nin%` = Negate(`%in%`)
 
 
@@ -23,7 +29,7 @@ VlnPlot(lane_a, features = c("nFeature_RNA", "nCount_RNA", "pct_mt"), ncol = 3) 
 lane_a <- subset(lane_a, subset = nFeature_RNA > 200 & nFeature_RNA < 6000 & pct_mt < 8)
 lane_a <- SCTransform(lane_a, vst.flavor = "v2", verbose = TRUE)
 
-# demultiplexing
+# demultiplexing for runs with MULTIseq
 DefaultAssay(lane_a) <- "Sample"
 lane_a <- NormalizeData(lane_a, assay = "Sample", normalization.method = "CLR")
 
@@ -37,16 +43,16 @@ lane_a <- MULTIseqDemux(lane_a,
 lane_a <- subset(lane_a, MULTI_ID == "Doublet", invert = TRUE)
 lane_a <- subset(lane_a, MULTI_ID == "Negative", invert = TRUE) 
 
-# initial analysis
+# normalization, clustering, etc
 DefaultAssay(lane_a) <- "SCT"
 lane_a <- RunPCA(lane_a, verbose = FALSE)
-ElbowPlot(lane_a, ndims = 50, reduction = "pca")
+ElbowPlot(lane_a, ndims = 50, reduction = "pca") # to decide dims, SCTransform works well with higher dims 
 lane_a <- RunUMAP(lane_a, dims = 1:30, verbose = FALSE)
 lane_a <- FindNeighbors(lane_a, dims = 1:30, verbose = FALSE)
 lane_a <- FindClusters(lane_a, verbose = FALSE, resolution = 0.2)
 
 
-##### integrating seurat objects (when applicable) #####
+##### integrating seurat objects, SCTransform method (if applicable) #####
 data_list <- c(lane_a, lane_b)
 features <- SelectIntegrationFeatures(object.list = data_list, nfeatures = 3000)
 data_list <- PrepSCTIntegration(object.list = data_list, anchor.features = features)
@@ -66,11 +72,6 @@ sep_demux_combo_joined <- JoinLayers(sep_demux_combo)
 
 
 ##### cell type annotation for blood + bone marrow samples #####
-library(SingleR)
-library(celldex)
-library(SingleCellExperiment)
-library(dbplyr)
-
 ls('package:celldex')
 ref.set <- celldex::MouseRNAseqData()
 
@@ -88,9 +89,6 @@ DimPlot(blood, reduction='umap', group.by='SingleR.labels_fine')
 
 
 ##### doublet removal for non multiplexed samples #####
-library(irlba)
-library(scDblFinder)
-
 blood_sce <- as.SingleCellExperiment(blood)
 blood_sce <- scDblFinder(blood_sce) 
 blood_calls <- as.data.frame(blood_sce$scDblFinder.class)
