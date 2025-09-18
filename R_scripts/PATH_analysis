@@ -4,12 +4,11 @@ library(expm)
 library(tidytree)
 library(Matrix)
 library(patchwork)
-library(parallel)
 library(msigdbr)
 library(magrittr)
 library(tidyverse)
-library(fgsea)
 library(ComplexHeatmap)
+`%nin%` = Negate(`%in%`)
 
 #whitelist of GEX cell IDs vs feature barcode cell IDs
 rosetta <- read.table("/dartfs/rc/lab/M/McKennaLab/resources/cellranger_versions/cellranger-7.2.0/lib/python/cellranger/barcodes/translation/3M-february-2018.txt.gz") #use updated whitelist for GEM-X 10x runs
