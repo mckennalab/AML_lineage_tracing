@@ -1,80 +1,41 @@
 # Survival analysis 
 
+# pre resistant signature = resistant lineage signature
+
 ##### packages #####
 library(ggplot2)
 library(survival)
 library(corrplot)
-library(devtools)
 library(ShortRead) 
 library(data.table)
 library(dplyr)
 library(stringr)
-library(BiocManager)
 library(bayesbio)
 library(grid)
 library(cowplot)
 library(org.Hs.eg.db)
 library(biomaRt)
+library(rstatix)
+library(ggbeeswarm)
+`%nin%` = Negate(`%in%`)
 
 
 
 ##### load modules, get human orthologs for C1498 modules #####
 hl60_mods <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/illumina/RS30_RS31_humancellEP/GEX/hotspot/hl60_megamega_modlist.csv")
 
-# split modules into individual lists, clean up (depending on module csv format)
-mega_mod1 <- c(hl60_mods$Module.1)
-mega_mod1 <- mega_mod1[mega_mod1 != ""]
+# split modules into individual lists, clean up (saved in a weird csv format)
+mega_mod1 <- hl60_mods$Module.1[hl60_mods$Module.1 != ""]
+mega_mod2 <- hl60_mods$Module.2[hl60_mods$Module.2 != ""]
+mega_mod3 <- hl60_mods$Module.3[hl60_mods$Module.3 != ""]
+mega_mod4 <- hl60_mods$Module.4[hl60_mods$Module.4 != ""]
+mega_mod5 <- hl60_mods$Module.5[hl60_mods$Module.5 != ""]
+mega_mod6 <- hl60_mods$Module.6[hl60_mods$Module.6 != ""]
+mega_mod7 <- hl60_mods$Module.7[hl60_mods$Module.7 != ""]
+mega_mod8 <- hl60_mods$Module.8[hl60_mods$Module.8 != ""]
+mega_mod9 <- hl60_mods$Module.9[hl60_mods$Module.9 != ""]
+mega_mod10 <- hl60_mods$Module.10[hl60_mods$Module.10 != ""]
 
-mega_mod2 <- c(hl60_mods$Module.2)
-mega_mod2 <- mega_mod2[mega_mod2 != ""]
-
-mega_mod3 <- c(hl60_mods$Module.3)
-mega_mod3 <- mega_mod3[mega_mod3 != ""]
-
-mega_mod4 <- c(hl60_mods$Module.4)
-mega_mod4 <- mega_mod4[mega_mod4 != ""]
-
-mega_mod5 <- c(hl60_mods$Module.5)
-mega_mod5 <- mega_mod5[mega_mod5 != ""]
-
-mega_mod6 <- c(hl60_mods$Module.6)
-mega_mod6 <- mega_mod6[mega_mod6 != ""]
-
-mega_mod7 <- c(hl60_mods$Module.7)
-mega_mod7 <- mega_mod7[mega_mod7 != ""]
-
-mega_mod8 <- c(hl60_mods$Module.8)
-mega_mod8 <- mega_mod8[mega_mod8 != ""]
-
-mega_mod9 <- c(hl60_mods$Module.9)
-mega_mod9 <- mega_mod9[mega_mod9 != ""]
-
-mega_mod10 <- c(hl60_mods$Module.10)
-mega_mod10 <- mega_mod10[mega_mod10 != ""]
-
-mega_mod11 <- c(hl60_mods$Module.11)
-mega_mod11 <- mega_mod11[mega_mod11 != ""]
-
-mega_mod12 <- c(hl60_mods$Module.12)
-mega_mod12 <- mega_mod12[mega_mod12 != ""]
-
-mega_mod13 <- c(hl60_mods$Module.13)
-mega_mod13 <- mega_mod13[mega_mod13 != ""]
-
-mega_mod14 <- c(hl60_mods$Module.14)
-mega_mod14 <- mega_mod14[mega_mod14 != ""]
-
-mega_mod15 <- c(hl60_mods$Module.15)
-mega_mod15 <- mega_mod15[mega_mod15 != ""]
-
-mega_mod16 <- c(hl60_mods$Module.16)
-mega_mod16 <- mega_mod16[mega_mod16 != ""]
-
-mega_mod17 <- c(hl60_mods$Module.17)
-mega_mod17 <- mega_mod17[mega_mod17 != ""]
-
-mega_mod18 <- c(hl60_mods$Module.18)
-mega_mod18 <- mega_mod18[mega_mod18 != ""]
 
 # load C1498 modules and convert to human gene orthologs
 c1498_mods <- read.csv("/dartfs/rc/lab/M/McKennaLab/projects/hannah/aml/analysis/c1498_lineage_NEW/rs22_rs28/trees_res1/HotSpot/241113_rs22_rs28_combo_joined_rm_MT-RB/24114_rs22_rs28_combo_joined_rm_MT_RB_hotspot_modules_annotated.csv")
@@ -93,6 +54,7 @@ make_hs_list = function(df) {
   df <- df %>% inner_join(mh_data, by = c('gene' = 'Symbol.x'))
   df <- c(df$Symbol.y)
 }
+
 f1m1 <- make_hs_list(as.data.frame(f1_mega_mods$Gene[f1_mega_mods$Module == 1]))
 f1m2 <- make_hs_list(as.data.frame(f1_mega_mods$Gene[f1_mega_mods$Module == 2]))
 f1m3 <- make_hs_list(as.data.frame(f1_mega_mods$Gene[f1_mega_mods$Module == 3]))
@@ -107,7 +69,7 @@ f6m5 <- make_hs_list(as.data.frame(f6_mega_mods$Gene[f6_mega_mods$Module == 5]))
 pre_resist_sig <- c("CLSTN2", "SPATA6", "SGCZ", "PRICKLE1", "IGF2BP2", "CAMK2D", "MEIS1", "KCND2", "MKX", "BMP2", "TRHDE", "APBA2", "PPFIA2", "CPNE8", "PON2", "LAMP5", "LNCAROD", "CPLANE1", "HOXB-AS3", "NAV3", "SDK1", "IRF8", "CES1", "PTPRN2", "HIST1H1D", "NCAM1", "LHX2", "SASH1", "AK1", "ELANE", "PPDPF", "UNCX", "CFD", "AC107223.1", "EXT1", "BEX3", "CLEC11A", "LINC02169", "TNS3", "TTC28", "KLHL29", "CKAP4", "AL163541.1", "PRDX2", "BEX1", "MAP1LC3A", "HOXA9", "PSD3", "AC090796.1", "SERPINB6", "WDR49", "ANXA2", "CD36", "MEF2C", "SLC35F1", "HNMT", "AL713998.1", "MRAS", "DAPK1", "DTNA", "ACAA2", "HLA-B", "MGMT", "ASGR2", "STARD13")
 
 
-##### prepping TARGET-AML data #####
+##### loading and cleaning TARGET-AML data #####
 fn <- "https://cbioportal-datahub.s3.amazonaws.com/aml_target_gdc.tar.gz"
 download.file(fn,destfile="tmp.tar.gz")
 untar("tmp.tar.gz",list=TRUE)  ## check contents
@@ -130,7 +92,7 @@ clin_data <- clin_data[5:2350,]
 clin_data_full <- clin_data %>% right_join(clin_sample_data, by = ("PATIENT_ID"))
 
 
-# adding extra clin info from GDC
+# adding extra clinical info from GDC, cleaning it up 
 clin_val_info <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/other/c1498_hl60_module_analysis/TARGET_AML_clinvalidation_clindata.csv")
 clin_val_info_min <- clin_val_info[, c(1,2,5,6,7,8,9,14,15,18,49,50,51,52,53,54,55,57,58,59,64)]
 discovery_info <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/other/c1498_hl60_module_analysis/TARGET_AML_discovery_clindata.csv")
@@ -164,13 +126,10 @@ clin_data_full$status[clin_data_full$first_event %in% c("Censored", "Second Mali
 clin_data_full <- clin_data_full %>% 
   mutate(months_to_follow_up = round(days_to_follow_up/30.437, digit=3))
 
-# map gene names - sometimes the site is down
-ensembl <- useMart("ensembl", dataset = "hsapiens_gene_ensembl")
-mapping <- getBM(attributes=c('entrezgene_id', 'hgnc_symbol'), mart = ensembl)
-mapping <- mapping %>% distinct()
-write.csv(mapping, "/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/references/hs_entrez_hgnc_mapping.csv") #for when the site is down
-target_zscores_matched <- target_mrna_fpkm_zscores %>% inner_join(mapping, by = c("Entrez_Gene_Id" = "entrezgene_id"))
-target_zscores_matched <- target_zscores_matched[, -1]
+
+genes <- read.csv("/dartfs/rc/lab/M/McKennaLab/projects/saxe/data/other/c1498_hl60_module_analysis/ensembl_biomart_canonical_transcripts_per_hgnc.txt", sep = "\t")
+new_mapping <- genes %>% dplyr::select(hgnc_symbol, entrez_gene_id)
+target_zscores_matched <- new_mapping %>% right_join(target_mrna_fpkm_zscores, by = c("entrez_gene_id" = "Entrez_Gene_Id"))
 
 
 ##### score patients on expression #####
@@ -222,8 +181,6 @@ score_df_nosort <- score_df_nosort[!grepl("sort", score_df_nosort$PATIENT_ID),]
 score_df <- score_df_nosort
 
 # split into dfs based on sample type
-post_tx_bm <- score_df[score_df$SAMPLE_TYPE %in% "Blood Derived Cancer - Bone Marrow, Post-treatment", ]
-post_tx_blood <- score_df[score_df$SAMPLE_TYPE %in% "Blood Derived Cancer - Peripheral Blood, Post-treatment", ]
 dx_bm <- score_df[score_df$SAMPLE_TYPE %in% "Primary Blood Derived Cancer - Bone Marrow", ] 
 dx_blood <- score_df[score_df$SAMPLE_TYPE %in% "Primary Blood Derived Cancer - Peripheral Blood", ] 
 all_bm <- score_df[score_df$SAMPLE_TYPE %in% c("Blood Derived Cancer - Bone Marrow, Post-treatment", "Primary Blood Derived Cancer - Bone Marrow"), ] 
@@ -237,7 +194,7 @@ ggforest(model, data = dx_bm) + theme_cowplot()
 
 # with risk group 
 dx_bm_w_riskcat <- dx_bm[!is.na(dx_bm$Risk.group), ]
-# remove unclear risk group categories
+# remove risk group categories that don't match the rest of the data
 dx_bm_w_riskcat <- dx_bm_w_riskcat[dx_bm_w_riskcat$Risk.group %nin% c("", "10", "30"), ]
 dx_bm_w_riskcat$Risk.group <- factor(dx_bm_w_riskcat$Risk.group, levels = c("Standard Risk", "Low Risk", "High Risk"))
 
@@ -270,7 +227,7 @@ ggsurvplot(survfit(Surv(months_to_follow_up, status) ~ level,
 
 
 ##### expression level violin plots #####
-# by outcome at 5 years post dx, need to pull from follow_up data
+# by outcome at 5 years post dx, need to pull from follow_up data, cleanup
 censor_data <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/other/c1498_hl60_module_analysis/clinical.project-target-aml.2024-12-25/follow_up.tsv", sep = "\t")
 censor_data <- censor_data[censor_data$case_submitter_id %in% score_df$PATIENT_ID, ]
 censor_data_timetoevent <- censor_data[censor_data$days_to_first_event != "'--", c(2,18)]
@@ -288,8 +245,6 @@ score_df_5yr <- score_df %>% inner_join(yr5_status, by = c("PATIENT_ID" = "case_
 dx_bm_5yr <- score_df_5yr[score_df_5yr$SAMPLE_TYPE %in% "Primary Blood Derived Cancer - Bone Marrow", ] #check patients are all unique
 dx_blood_5yr <- score_df_5yr[score_df_5yr$SAMPLE_TYPE %in% "Primary Blood Derived Cancer - Peripheral Blood", ] #check patients are all unique
 
-library(rstatix)
-library(ggbeeswarm)
 pairwise.test <- dx_blood_5yr[dx_blood_5yr$yr5_status %nin% "Second Malignant Neoplasm", ] %>% wilcox_test(pre_resist ~ yr5_status, p.adjust.method = "bonferroni") 
 pairwise.test <- pairwise.test[pairwise.test$p.adj.signif != "ns", ]
 ggplot(dx_blood_5yr[dx_blood_5yr$yr5_status %nin% "Second Malignant Neoplasm", ], aes(x=factor(yr5_status, levels = c("DF", "Death", "Induction Failure", "Relapse")), y=pre_resist)) + 
