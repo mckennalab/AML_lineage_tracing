@@ -3,13 +3,11 @@
 ##### packages #####
 library(stringi)
 library(cowplot)
-library(Seurat)
 library(data.table)
 library(stringr)
 library(zeallot)
 library(R.utils) 
 library(rlang)
-library(BiocManager)
 library(dplyr)
 library(ggplot2)
 library(janitor)
@@ -120,7 +118,7 @@ RLP13 <- RLP_13[, c(1,2,19,20)]
 clone_ids <- read.csv("/dartfs-hpc/rc/lab/M/McKennaLab/projects/saxe/data/other/neoclone_IDs.csv", header = TRUE, row.names = 1) #pre-identified founder tags
 clone_ids <- clone_ids[clone_ids$clone %in% c(1,5,6,11), ]
 
-# prep data for each mouse/timepoint, not a great method but it works for now
+# prep data for each mouse/timepoint, add place holders for missing data, not the best approach but it works
 np13_sub_table <- as.data.frame(table(NP13$ftag))
 np13_sub_table <- np13_sub_table %>% inner_join(clone_ids, by = c("Var1" = "ID"))
 np13_counts <- np13_sub_table %>%
