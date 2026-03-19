@@ -56,7 +56,7 @@ summary_df <- prop_df %>% dplyr::group_by(sample) %>%
                    se = sd / sqrt(n))
 
 
-ggplot(summary_df, aes(x=sample, y=mean, fill = "test")) + 
+ggplot(summary_df, aes(x=as.character(sample), y=mean, fill = "test")) + 
   geom_bar(stat="identity", color="#b3cef2", 
            position=position_dodge()) +
   geom_errorbar(aes(ymin = ifelse(mean - sd < 0, 0, mean - sd), ymax = ifelse(mean + sd > 8, 8, mean + sd)), width=.2,
