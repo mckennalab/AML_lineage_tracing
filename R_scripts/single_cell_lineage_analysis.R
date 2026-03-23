@@ -230,3 +230,20 @@ ggplot(c_counts_prop_df, aes(y = prop, x = timepoint, fill = factor(Founder, lev
   cowplot::theme_minimal_hgrid() + theme_cowplot() + ylab("Proportion of reads") + guides(fill = guide_legend(title = "Founder")) + scale_fill_manual(values = rev(as.vector(stepped(15)))) 
 
 
+##### pseudobulked heatmap (figure 5C and s7C) #####
+pseudo <- AggregateExpression(strict_founder_hl60s, assays = "RNA", return.seurat = T, group.by = c("group", "flask", "timepoint"))
+pseudo$pseudo_id <- paste(pseudo$group, pseudo$flask, pseudo$timepoint, sep = "_")
+
+genes <- c("HOXA9", "MEIS1", "MEF2C", "IRF8", "IGF2BP2", "CD93", "CD99", "PTPRC", "TRPV2", "ACVR1")
+
+heatmap_data <- FetchData(pseudo, vars =  genes, layer = "scale.data")
+sample_data <- FetchData(pseudo, vars =  c("group", "flask", "timepoint"))
+
+pheatmap(as.matrix(heatmap_data), 
+         annotation_row = sample_data, 
+         labels_row = paste(1:7), 
+         cluster_rows = TRUE, 
+         cluster_cols = TRUE, 
+         border_color = FALSE, 
+         color = colorRampPalette(rev(brewer.pal(n = 11, name = "RdYlBu")))(100), 
+         cutree_rows = 4, cutree_cols = 2, treeheight_row = 0)
