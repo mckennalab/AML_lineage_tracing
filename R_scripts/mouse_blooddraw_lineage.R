@@ -339,6 +339,10 @@ rlp67_sub_table$timepoint <- 67
 rlp_lineplot <- rbind(rlp13_sub_table, rlp28_sub_table, rlp57_sub_table, rlp67_sub_table)
 
 # combine mice for 1 plot
+np_lineplot$mouse <- "np"
+rp_lineplot$mouse <- "rp"
+lp_lineplot$mouse <- "lp"
+rlp_lineplot$mouse <- "rlp"
 lineplot_full <- rbind(np_lineplot, rp_lineplot, lp_lineplot, rlp_lineplot)
 ggplot(lineplot_full, aes(x = timepoint, y = ratio, group = mouse)) +
   geom_line(aes(color = mouse), linewidth = 1) +
