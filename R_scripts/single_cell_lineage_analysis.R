@@ -71,9 +71,7 @@ ggplot(prop_df, aes(fill = factor(founder, levels=c(11,6,1)), y = n, x = factor(
 ##### dot plot of clone proportions by exp group (figure 2d) #####
 library(ggprism)
 # isolate cells with clone assignemnts
-strict_founder_cells_cas <- strict_founder_cells[, strict_founder_cells$cas_clone != "F1.unassigned"]
-strict_founder_cells_cas <- strict_founder_cells_cas[, strict_founder_cells_cas$cas_clone != "F6.unassigned"]
-strict_founder_cells_cas <- strict_founder_cells_cas[, strict_founder_cells_cas$cas_clone != "F11.unassigned"]
+strict_founder_cells_cas <- strict_founder_cells[, strict_founder_cells$cas_clone %nin% c("F1.unassigned", "F6.unassigned", "F11.unassigned")]
 
 clone_df <- as.data.frame(strict_founder_cells_cas$cas_clone)
 names(clone_df) <- "clone"
