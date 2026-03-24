@@ -51,5 +51,5 @@
    - HotSpot Modules [4_HotSpotModules.py](python_scripts/4_HotSpotModules.py)
 
 ### Publicly available bulk RNA and scRNA-seq data analysis 
-1. Bulk RNA-seq cohort analysis (TARGET-AML, BEAT-AML, TCGA-LAML) in [RNAseq_survival_analysis.R](R_scripts/RNAseq_survival_analysis.R)
+1. Bulk RNA-seq cohort analysis (TARGET-AML, BEAT-AML, TCGA LAML) in [RNAseq_survival_analysis.R](R_scripts/RNAseq_survival_analysis.R)
 2. Patient sample scRNA-seq analysis in [patient_single_cell_analysis.R](R_scripts/patient_single_cell_analysis.R)
