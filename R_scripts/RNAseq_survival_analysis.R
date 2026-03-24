@@ -1,7 +1,3 @@
-# Survival analysis 
-
-# pre resistant signature = resistant lineage signature
-
 ##### packages #####
 library(ggplot2)
 library(survival)
