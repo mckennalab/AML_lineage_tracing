@@ -20,7 +20,8 @@
     - [PATH_analysis.R](R_scripts/PATH_analysis.R): state transitions and auto/crosscorrelation using PATH
     - [mouse_blooddraw_lineage.R](R_scripts/mouse_blooddraw_lineage.R): analysis of FLARE bulk sequencing data from longitudinal blood samples
     - [module_overlap_analysis.R](R_scripts/module_overlap_analysis.R): computing Hotspot gene module overlaps
-    - [survival_analysis_TARGET.R](R_scripts/survival_analysis_TARGET.R): survival analysis using the TARGET AML patient cohort
+    - [RNAseq_survival_analysis.R](R_scripts/RNAseq_survival_analysis.R): survival analysis using publicly available AML patient RNAseq cohorts
+    - [patient_single_cell_analysis.R](R_scripts/patient_single_cell_analysis.R): analysis of publicly available patient sample scRNA-seq
   - Python scripts
     - [AML_lineage_utilities.py](python_scripts/AML_lineage_utilities.py): Functions for processing FLARE lineage data.
     - [1_LineagePreprocessing.py](python_scripts/1_LineagePreprocessing.py): All preprocessing for FLARE lineage data, including indel barcodes and clone tags.     
@@ -48,3 +49,7 @@
    - PATH, state transitions in [PATH_analysis.R](R_scripts/PATH_analysis.R)
    - GSEA analysis in [single_cell_lineage_analysis.R](R_scripts/single_cell_lineage_analysis.R)
    - HotSpot Modules [4_HotSpotModules.py](python_scripts/4_HotSpotModules.py)
+
+### Publicly available bulk RNA and scRNA-seq data analysis 
+1. Bulk RNA-seq cohort analysis (TARGET-AML, BEAT-AML, TCGA-LAML) in [RNAseq_survival_analysis.R](R_scripts/RNAseq_survival_analysis.R)
+2. Patient sample scRNA-seq analysis in [patient_single_cell_analysis.R](R_scripts/patient_single_cell_analysis.R)
