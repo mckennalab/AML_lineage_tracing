@@ -55,6 +55,8 @@ ggplot(data[data$Subgroup %in% "KMT2A",], aes(x=Malignant, y=resist_lin1)) +
 pvals <- data.frame(pvals = c(0,0,0,0,5.56E-07))
 pvals$padj <- p.adjust(pvals$pvals, method="BH")
 
+#same process for Mumme et al data (harmony integrated instead of sketched)
+
 ##### scatter plots (figure 6B, S9A-f) #####
 data <- FetchData(malig_pt, vars = c("orig.ident", "Lambo_et_al_ID", "timepoint", "Overall_survival_days", "Disease_free_days", "Progression_free_survival_days", "Risk_Group", "aml_blasttype", "Phase", "Classified_Celltype", "Subgroup", "resist_lin1", "sig_wo_kmt2a_genes1"))
 
