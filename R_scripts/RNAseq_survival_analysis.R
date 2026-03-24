@@ -381,3 +381,23 @@ ggplot(result_df[-1,], aes(x = hazard)) +
   color="red", linetype="dashed") + xlim(0,4) + theme_cowplot()
 
 perm_pval <- length(result_df[result_df$hazard > real_hr])
+
+##### correlation of signature genes (figure S9G) #####
+sig_gene_set <- target_zscores_matched[target_zscores_matched$hgnc_symbol %in% resist_lin, ]
+t_df <- as.data.frame(t(sig_gene_set))
+names(t_df) <- t_df[1,]
+sig_df <- t_df[-c(1:2),] %>% mutate_all(function(x) as.numeric(as.character(x))) %>% rownames_to_column(var = "patient")
+
+sig_df$Sample_ID <- sig_df$patient
+sig_df$Sample_ID <- gsub('\\.', '-', sig_df$Sample_ID)
+sig_df <- sig_df %>% inner_join(all_the_metadata_ever, by = c("Sample_ID" = "sample"))
+
+dx_bm <- sig_df[sig_df$sample_type %in% "Primary Blood Derived Cancer - Bone Marrow", ] #all unique
+dx_blood <- sig_df[sig_df$sample_type %in% "Primary Blood Derived Cancer - Peripheral Blood", ] #all unique
+all_dx_unique <- rbind(dx_bm, dx_blood[dx_blood$PATIENT_ID %nin% intersect(dx_blood$PATIENT_ID, dx_bm$PATIENT_ID), ])
+
+corr_num_factors <- cor(all_dx_unique[, 2:62], method = "pearson")
+corrplot(
+  corr_num_factors,
+  method = "color",
+  order = "hclust")
