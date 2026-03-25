@@ -71,11 +71,19 @@ sig_by_blasttype <- data %>% group_by(Lambo_et_al_ID, timepoint, Classified_Cell
 sig_by_blasttype_wide <- sig_by_blasttype %>% pivot_wider(names_from = timepoint, values_from = c(mean, max))
 sig_by_blasttype_wide <- sig_by_blasttype_wide %>% mutate(code = paste0(Lambo_et_al_ID, "_", Classified_Celltype))
 
+sig_total <- data %>% group_by(Lambo_et_al_ID, timepoint) %>% 
+   summarize(mean_total = mean(resist_lin1)) %>% ungroup()
+sig_total <- sig_total %>% pivot_wider(names_from = timepoint, values_from = c(mean_total))
+sig_total <- sig_total %>% mutate(code = paste0(Lambo_et_al_ID))
+
 full_df <- pt_prop_min_wide %>% right_join(sig_by_blasttype_wide, by = "code")
 pt_orig_map <- data[, c(2,4:7,11)] %>% distinct()
 full_df <- full_df %>% left_join(pt_orig_map, by = "Lambo_et_al_ID")
+full_df <- full_df %>% right_join(sig_total, by = c("Lambo_et_al_ID" = "code"))
 full_df_hsc <- full_df[full_df$Classified_Celltype == "HSC", ]
 
 ggplot(full_df_hsc, aes(x = mean_diagnosis, y = diff)) + 
   geom_point(aes(colour = Subgroup)) +
-  geom_smooth(method = "lm", se = TRUE) + stat_cor(method="pearson")
+  geom_smooth(method = "lm", se = TRUE, fullrange = TRUE) + stat_cor(method="pearson") + 
+  scale_x_continuous(expand = c(0,0), limits=c(-0.1, 0.16)) + theme_cowplot() #set limits for specific comparison
+
