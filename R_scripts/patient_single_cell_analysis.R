@@ -52,6 +52,7 @@ pvals$padj <- p.adjust(pvals$pvals, method="BH")
 #same process for Mumme et al data (harmony integrated instead of sketched)
 
 ##### scatter plots (figure 6B, S9A-f) #####
+#extract data from object with only malignant cells
 data <- FetchData(malig_pt, vars = c("orig.ident", "Lambo_et_al_ID", "timepoint", "Overall_survival_days", "Disease_free_days", "Progression_free_survival_days", "Risk_Group", "aml_blasttype", "Phase", "Classified_Celltype", "Subgroup", "resist_lin1", "sig_wo_kmt2a_genes1"))
 
 pt_map <- data[, c(1:7,11)] %>% distinct()
