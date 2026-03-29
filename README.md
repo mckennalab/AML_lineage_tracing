@@ -1,3 +1,6 @@
+[![DOI](https://zenodo.org/badge/745203458.svg)](https://doi.org/10.5281/zenodo.19303229)
+
+
 # AML FLARE lineage tracing
 ![FLARE overview](figures/FLARE_overview.jpg)
 
